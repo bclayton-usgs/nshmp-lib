@@ -1,0 +1,106 @@
+
+apply plugin: 'java'
+apply plugin: 'jacoco'
+
+sourceCompatibility = 1.8
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+  compile('com.google.guava:guava:26.0-jre') {
+    /* skip optional guava dependencies */
+    transitive = false
+  }
+  testCompile 'junit:junit:4.12'
+}
+
+sourceSets {
+  main {
+    java {
+      srcDirs = ['src']
+    }
+    resources {
+     srcDirs = ['src']
+      exclude '**/*.java'
+    }
+  }
+  test {
+    java {
+      srcDirs = ['test']
+    }
+    resources {
+      srcDirs = ['test']
+      exclude '**/*.java'
+    }
+  }
+}
+
+ext {
+  projectName = 'opensha-util'
+  gitTag = 'git describe --tags'.execute().text.replace('\n', '') ?: 'unknown'
+  gitLink = '<a href="https://github.com/opensha/opensha-util">' + gitTag +'</a>'
+  propsPath = '/resources/main/app.properties'
+  docTitle = projectName + ': ' + gitLink
+}
+
+test {
+}
+
+jacocoTestReport {
+  reports {
+    xml.enabled true
+    html.enabled false
+  }
+}
+
+
+javadoc {
+  options.setUse(true)
+  options.author(true)
+  options.version(true)
+  options.windowTitle(projectName)
+  options.docTitle(docTitle)
+  options.encoding('UTF-8')
+  options.docEncoding('UTF-8')
+  options.charSet('UTF-8')
+  options.addStringOption('Xdoclint:none', '-quiet')
+  options.links(
+    'https://docs.oracle.com/javase/8/docs/api/',
+    'https://google.github.io/guava/releases/23.0/api/docs/')
+  include 'org/opensha/util/**'
+  exclude 'org/opensha/util/etc/**'
+  exclude 'org/opensha/util/internal/**'
+}
+
+/*
+ * Enhance the jar task to build a fat jar if running the build
+ * directly and add application version to a properties file.
+ * Note that 'git describe' only works when running gradle from
+ * the command line.
+ */
+jar {
+  doFirst {
+  
+    /* possible fat jar */
+    if (rootProject.name == projectName) {
+      from { configurations.compile.collect {
+        it.isDirectory() ? it : zipTree(it).matching {
+          exclude { it.path.contains('META-INF') }
+        }
+      }}
+    }
+    
+    /* record app version */
+    def props = new Properties()
+    def propsFile = new File(project.buildDir.toString() + propsPath)
+    propsFile.getParentFile().mkdirs()
+    propsFile.createNewFile()
+    props.setProperty('app.version', gitTag)
+    props.store(propsFile.newWriter(), null)
+  }
+}
+
+/* Travis trigger */
+check.dependsOn jacocoTestReport

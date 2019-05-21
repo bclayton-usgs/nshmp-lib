@@ -1,4 +1,4 @@
-package org.opensha.util;
+package gov.usgs.earthquake.nshmp;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

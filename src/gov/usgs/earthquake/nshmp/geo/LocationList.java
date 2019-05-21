@@ -1,8 +1,8 @@
-package org.opensha.util.geo;
+package gov.usgs.earthquake.nshmp.geo;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.opensha.util.Text.WHITESPACE_SPLITTER;
+import static gov.usgs.earthquake.nshmp.Text.WHITESPACE_SPLITTER;
 
 import java.util.List;
 

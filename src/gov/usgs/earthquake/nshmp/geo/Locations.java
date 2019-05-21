@@ -1,7 +1,10 @@
-package org.opensha.util.geo;
+package gov.usgs.earthquake.nshmp.geo;
 
-import static org.opensha.util.Text.NEWLINE;
 import static com.google.common.base.Preconditions.checkArgument;
+import static gov.usgs.earthquake.nshmp.Text.NEWLINE;
+import static gov.usgs.earthquake.nshmp.geo.Coordinates.EARTH_RADIUS_MEAN;
+import static gov.usgs.earthquake.nshmp.geo.Coordinates.LAT_RANGE;
+import static gov.usgs.earthquake.nshmp.geo.Coordinates.LON_RANGE;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.acos;
@@ -12,19 +15,16 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
-import static org.opensha.util.geo.Coordinates.EARTH_RADIUS_MEAN;
-import static org.opensha.util.geo.Coordinates.LAT_RANGE;
-import static org.opensha.util.geo.Coordinates.LON_RANGE;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 
-import org.opensha.util.Maths;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.math.DoubleMath;
+
+import gov.usgs.earthquake.nshmp.Maths;
 
 /**
  * Static utility methods to operate on geographic {@code Location} data.

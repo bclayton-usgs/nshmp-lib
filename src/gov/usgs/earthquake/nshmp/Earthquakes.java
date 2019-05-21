@@ -1,6 +1,6 @@
-package org.opensha.util;
+package gov.usgs.earthquake.nshmp;
 
-import static org.opensha.util.data.DoubleData.checkInRange;
+import static gov.usgs.earthquake.nshmp.data.DoubleData.checkInRange;
 
 import com.google.common.collect.Range;
 

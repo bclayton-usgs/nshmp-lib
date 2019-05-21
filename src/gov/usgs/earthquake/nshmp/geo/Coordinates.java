@@ -1,10 +1,10 @@
-package org.opensha.util.geo;
-
-import static org.opensha.util.data.DoubleData.checkInRange;
+package gov.usgs.earthquake.nshmp.geo;
 
 import com.google.common.collect.Range;
 
-import org.opensha.util.Maths;
+import gov.usgs.earthquake.nshmp.Maths;
+
+import static gov.usgs.earthquake.nshmp.data.DoubleData.checkInRange;
 
 /**
  * Constants and utility methods pertaining to geographic coordinates.

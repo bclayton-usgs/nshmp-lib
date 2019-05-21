@@ -1,11 +1,11 @@
-package org.opensha.util.geo;
+package gov.usgs.earthquake.nshmp.geo;
 
+import static gov.usgs.earthquake.nshmp.Maths.TO_DEGREES;
+import static gov.usgs.earthquake.nshmp.Maths.TWO_PI;
 import static java.lang.Math.PI;
 import static java.lang.Math.atan;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-import static org.opensha.util.Maths.TO_DEGREES;
-import static org.opensha.util.Maths.TWO_PI;
 
 import com.google.common.base.MoreObjects;
 

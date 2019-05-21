@@ -1,19 +1,19 @@
-package org.opensha.util.geo;
+package gov.usgs.earthquake.nshmp.geo;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.opensha.util.Earthquakes.checkDepth;
-import static org.opensha.util.geo.Coordinates.checkLatitude;
-import static org.opensha.util.geo.Coordinates.checkLongitude;
+import static gov.usgs.earthquake.nshmp.Earthquakes.checkDepth;
+import static gov.usgs.earthquake.nshmp.geo.Coordinates.checkLatitude;
+import static gov.usgs.earthquake.nshmp.geo.Coordinates.checkLongitude;
 
 import java.util.List;
 import java.util.Objects;
-
-import org.opensha.util.Maths;
 
 import com.google.common.base.Converter;
 import com.google.common.base.Splitter;
 import com.google.common.collect.FluentIterable;
 import com.google.common.primitives.Doubles;
+
+import gov.usgs.earthquake.nshmp.Maths;
 
 /**
  * A {@code Location} represents a point with reference to the earth's

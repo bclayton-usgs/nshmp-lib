@@ -1,21 +1,26 @@
-package org.opensha.util.geo;
+package gov.usgs.earthquake.nshmp.geo;
 
+import static gov.usgs.earthquake.nshmp.Text.NEWLINE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
-import static org.opensha.util.Text.NEWLINE;
 
 import java.util.List;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opensha.util.Maths;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
+import gov.usgs.earthquake.nshmp.Maths;
+import gov.usgs.earthquake.nshmp.geo.Location;
+import gov.usgs.earthquake.nshmp.geo.LocationList;
+import gov.usgs.earthquake.nshmp.geo.LocationVector;
+import gov.usgs.earthquake.nshmp.geo.RegularLocationList;
 
 // TODO re-enable LocationGrid tests; check coverage
 // TODO test hashCode and Equals implementations between

@@ -1,4 +1,4 @@
-package org.opensha.util.geo;
+package gov.usgs.earthquake.nshmp.geo;
 
 import java.util.Arrays;
 import java.util.Objects;

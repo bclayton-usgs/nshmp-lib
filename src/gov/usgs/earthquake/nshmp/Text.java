@@ -1,4 +1,4 @@
-package org.opensha.util;
+package gov.usgs.earthquake.nshmp;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

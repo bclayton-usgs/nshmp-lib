@@ -1,4 +1,4 @@
-package org.opensha.util.geo;
+package gov.usgs.earthquake.nshmp.geo;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -6,6 +6,10 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
+
+import gov.usgs.earthquake.nshmp.geo.Bounds;
+import gov.usgs.earthquake.nshmp.geo.Location;
+import gov.usgs.earthquake.nshmp.geo.LocationList;
 
 @SuppressWarnings("javadoc")
 public class BoundsTests {

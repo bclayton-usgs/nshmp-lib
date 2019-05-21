@@ -1,14 +1,20 @@
-package org.opensha.util.geo;
+package gov.usgs.earthquake.nshmp.geo;
 
+import static gov.usgs.earthquake.nshmp.Maths.TO_DEGREES;
+import static gov.usgs.earthquake.nshmp.Maths.TO_RADIANS;
+import static gov.usgs.earthquake.nshmp.geo.Coordinates.EARTH_RADIUS_MEAN;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.opensha.util.Maths.TO_DEGREES;
-import static org.opensha.util.Maths.TO_RADIANS;
-import static org.opensha.util.geo.Coordinates.EARTH_RADIUS_MEAN;
 
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
+
+import gov.usgs.earthquake.nshmp.geo.Bounds;
+import gov.usgs.earthquake.nshmp.geo.Location;
+import gov.usgs.earthquake.nshmp.geo.LocationList;
+import gov.usgs.earthquake.nshmp.geo.LocationVector;
+import gov.usgs.earthquake.nshmp.geo.Locations;
 
 import java.util.List;
 import java.util.Random;

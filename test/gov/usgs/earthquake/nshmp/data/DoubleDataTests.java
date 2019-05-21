@@ -1,4 +1,4 @@
-package org.opensha.util.data;
+package gov.usgs.earthquake.nshmp.data;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -13,6 +13,8 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.common.primitives.Doubles;
+
+import gov.usgs.earthquake.nshmp.data.DoubleData;
 
 import java.util.ArrayList;
 import java.util.Arrays;

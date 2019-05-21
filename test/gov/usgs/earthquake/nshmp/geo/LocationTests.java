@@ -1,4 +1,4 @@
-package org.opensha.util.geo;
+package gov.usgs.earthquake.nshmp.geo;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -10,10 +10,12 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.opensha.util.Maths;
 
 import com.google.common.base.Converter;
 import com.google.common.collect.Lists;
+
+import gov.usgs.earthquake.nshmp.Maths;
+import gov.usgs.earthquake.nshmp.geo.Location;
 
 @SuppressWarnings("javadoc")
 public class LocationTests {

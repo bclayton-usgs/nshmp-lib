@@ -38,14 +38,18 @@ sourceSets {
 }
 
 ext {
-  projectName = 'opensha-util'
+  projectName = 'nshmp-lib'
   gitTag = 'git describe --tags'.execute().text.replace('\n', '') ?: 'unknown'
-  gitLink = '<a href="https://github.com/opensha/opensha-util">' + gitTag +'</a>'
+  gitLink = '<a href="https://github.com/bclayton-usgs/nshmp-lib">' + gitTag +'</a>'
   propsPath = '/resources/main/app.properties'
   docTitle = projectName + ': ' + gitLink
 }
 
 test {
+  filter {
+    includeTestsMatching "gov.usgs.earthquake.nshmp.data.*"
+    includeTestsMatching "gov.usgs.earthquake.nshmp.geo.*"
+  }
 }
 
 jacocoTestReport {
@@ -69,9 +73,9 @@ javadoc {
   options.links(
     'https://docs.oracle.com/javase/8/docs/api/',
     'https://google.github.io/guava/releases/23.0/api/docs/')
-  include 'org/opensha/util/**'
-  exclude 'org/opensha/util/etc/**'
-  exclude 'org/opensha/util/internal/**'
+  include 'gov/usgs/earthquake/nshmp/**'
+  exclude 'gov/usgs/earthquake/nshmp/etc/**'
+  exclude 'gov/usgs/earthquake/nshmp/internal/**'
 }
 
 /*

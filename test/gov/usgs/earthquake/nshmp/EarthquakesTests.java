@@ -18,62 +18,62 @@ public final class EarthquakesTests {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckDepthLo_IAE() {
+  public final void testCheckDepthLoIAE() {
     Earthquakes.checkDepth(-5.1);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckDepthHi_IAE() {
+  public final void testCheckDepthHiIAE() {
     Earthquakes.checkDepth(700.1);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckCrustalDepthLo_IAE() {
+  public final void testCheckCrustalDepthLoIAE() {
     Earthquakes.checkCrustalDepth(-0.1);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckCrustalDepthHi_IAE() {
+  public final void testCheckCrustalDepthHiIAE() {
     Earthquakes.checkCrustalDepth(40.1);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckCrustalWidthLo_IAE() {
+  public final void testCheckCrustalWidthLoIAE() {
     Earthquakes.checkCrustalWidth(-0.1);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckCrustalWipthHi_IAE() {
+  public final void testCheckCrustalWipthHiIAE() {
     Earthquakes.checkCrustalWidth(60.1);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckInterfaceDepthLo_IAE() {
+  public final void testCheckInterfaceDepthLoIAE() {
     Earthquakes.checkInterfaceDepth(-0.1);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckInterfaceDepthHi_IAE() {
+  public final void testCheckInterfaceDepthHiIAE() {
     Earthquakes.checkInterfaceDepth(60.1);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckInterfaceWidthLo_IAE() {
+  public final void testCheckInterfaceWidthLoIAE() {
     Earthquakes.checkInterfaceWidth(-0.1);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckInterfaceWipthHi_IAE() {
+  public final void testCheckInterfaceWipthHiIAE() {
     Earthquakes.checkInterfaceWidth(200.1);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckSlabDepthLo_IAE() {
+  public final void testCheckSlabDepthLoIAE() {
     Earthquakes.checkSlabDepth(19.9);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckSlabDepthHi_IAE() {
+  public final void testCheckSlabDepthHiIAE() {
     Earthquakes.checkSlabDepth(700.1);
   }
 
@@ -83,12 +83,12 @@ public final class EarthquakesTests {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckMagnitudeLo_IAE() {
+  public final void testCheckMagnitudeLoIAE() {
     Earthquakes.checkMagnitude(-2.1);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public final void testCheckMagnitudeHi_IAE() {
+  public final void testCheckMagnitudeHiIAE() {
     Earthquakes.checkMagnitude(9.8);
   }
 

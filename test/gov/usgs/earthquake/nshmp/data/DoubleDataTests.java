@@ -360,6 +360,13 @@ public final class DoubleDataTests {
       assertArrayEquals(d3_expect[i], d3_actual[i], 0.0);
     }
   }
+  
+  @Test
+  public final void testCumulate() {
+    double[] data = { 0.0, 2.0, 4.0, 6.0, 8.0 };
+    double[] expected = { 0.0, 2.0, 6.0, 12.0, 20.0 };
+    assertArrayEquals(expected, DoubleData.cumulate(data), 0.0);
+  }
 
   @Test
   public final void testTransform() {

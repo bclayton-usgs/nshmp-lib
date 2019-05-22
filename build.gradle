@@ -47,8 +47,7 @@ ext {
 
 test {
   filter {
-    includeTestsMatching "gov.usgs.earthquake.nshmp.data.*"
-    includeTestsMatching "gov.usgs.earthquake.nshmp.geo.*"
+    includeTestsMatching "gov.usgs.earthquake.nshmp.*"
   }
 }
 

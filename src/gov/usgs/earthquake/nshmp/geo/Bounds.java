@@ -41,7 +41,7 @@ public final class Bounds {
    * starting with {@link #min} and winding counter-clockwise.
    */
   public LocationList toList() {
-    return LocationList.create(
+    return LocationList.of(
         min,
         Location.create(min.latitude, max.longitude),
         max,

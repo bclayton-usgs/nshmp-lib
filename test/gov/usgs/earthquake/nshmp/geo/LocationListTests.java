@@ -50,8 +50,8 @@ public class LocationListTests {
     pp1 = Location.create(0, 0);
     pp2 = Location.create(1, 1);
 
-    locs1 = LocationList.create(p1, p2, p3, p4, p5, p6, p7);
-    locs2 = LocationList.create(p1, p3, p2, p4, p6, p5, p7);
+    locs1 = LocationList.of(p1, p2, p3, p4, p5, p6, p7);
+    locs2 = LocationList.of(p1, p3, p2, p4, p6, p5, p7);
 
     // g00 = Location.create(0, 0);
     // g01 = Location.create(1, 0);
@@ -71,43 +71,43 @@ public class LocationListTests {
 
   @Test
   public final void create() {
-    LocationList locs = LocationList.create(p1, p2, p3, p4, p5, p6, p7);
+    LocationList locs = LocationList.of(p1, p2, p3, p4, p5, p6, p7);
     assertEquals(locs, locs1);
     List<Location> il = ImmutableList.of(p1, p2, p3, p4, p5, p6, p7);
-    locs = LocationList.create(il);
+    locs = LocationList.copyOf(il);
     assertEquals(locs, locs1);
     assertSame(il, ((RegularLocationList) locs).locs);
-    locs = LocationList.create(locs1);
+    locs = LocationList.copyOf(locs1);
     assertSame(locs, locs1);
   }
 
   @Test(expected = NullPointerException.class)
   public final void create_NPE1() {
     Location[] locs = null;
-    LocationList.create(locs);
+    LocationList.of(locs);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public final void create_IAE1() {
     Location[] locs = new Location[] {};
-    LocationList.create(locs);
+    LocationList.of(locs);
   }
 
   @Test(expected = NullPointerException.class)
   public final void create_NPE2() {
     List<Location> locs = null;
-    LocationList.create(locs);
+    LocationList.copyOf(locs);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public final void create_IAE2() {
     List<Location> locs = ImmutableList.of();
-    LocationList.create(locs);
+    LocationList.copyOf(locs);
   }
 
   @Test
   public final void resample() {
-    LocationList locs = LocationList.create(pp1, pp2);
+    LocationList locs = LocationList.of(pp1, pp2);
     LocationList resampled = locs.resample(12);
     assertEquals(resampled.size(), 15);
     assertSame(resampled.first(), pp1);
@@ -117,20 +117,20 @@ public class LocationListTests {
     assertEquals(mid.latitude, 0.5000222122727477, 0.0);
 
     // singleton
-    locs = LocationList.create(pp1);
+    locs = LocationList.of(pp1);
     resampled = locs.resample(1.0);
     assertSame(locs, resampled);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public final void resample_IAE1() {
-    LocationList locs = LocationList.create(pp1, pp2);
+    LocationList locs = LocationList.of(pp1, pp2);
     locs.resample(Double.POSITIVE_INFINITY);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public final void resample_IAE2() {
-    LocationList locs = LocationList.create(pp1, pp2);
+    LocationList locs = LocationList.of(pp1, pp2);
     locs.resample(-1.0);
   }
 
@@ -210,7 +210,7 @@ public class LocationListTests {
 
   @Test
   public final void translate() {
-    LocationList locs = LocationList.create(pp1, pp2);
+    LocationList locs = LocationList.of(pp1, pp2);
     LocationVector v = LocationVector.create(135 * Maths.TO_RADIANS, 5.0, 5.0);
     LocationList transLoc = locs.translate(v);
     Location pp1trans = Location.create(-0.03179578273558637, 0.031795787631496104, 5.0);
@@ -223,7 +223,7 @@ public class LocationListTests {
   public final void fromString() {
     String locStr = "-117.0,34.0,0.1 -117.0,34.1,0.2 -117.1,34.0,0.3";
     LocationList locsFromString = LocationList.fromString(locStr);
-    LocationList locsActual = LocationList.create(
+    LocationList locsActual = LocationList.of(
         Location.create(34.0, -117.0, 0.1),
         Location.create(34.1, -117.0, 0.2),
         Location.create(34.0, -117.1, 0.3));
@@ -235,7 +235,7 @@ public class LocationListTests {
   @Test
   public final void hashCodeTest() {
     // copy create should return the same list
-    LocationList copy = LocationList.create(locs1);
+    LocationList copy = LocationList.copyOf(locs1);
     assertEquals(copy.hashCode(), locs1.hashCode());
     // using builder should copy locations
     copy = LocationList.builder().addAll(locs1).build();
@@ -258,12 +258,12 @@ public class LocationListTests {
     LocationList equal = null;
     assertNotEquals(locs1, equal);
     assertNotEquals(locs1, "test");
-    equal = LocationList.create(p1, p2, p3, p4, p5, p6, p7);
+    equal = LocationList.of(p1, p2, p3, p4, p5, p6, p7);
     assertEquals(locs1, equal);
     assertNotEquals(locs1, locs2);
 
     // size check
-    equal = LocationList.create(p1, p2, p3, p4, p5);
+    equal = LocationList.of(p1, p2, p3, p4, p5);
     assertNotEquals(locs1, equal);
 
     // check that ImmutableList is not equal to LocationList of same Locations
@@ -277,7 +277,7 @@ public class LocationListTests {
         .append("0.00000,0.00000,0.00000").append(NEWLINE)
         .append("1.00000,1.00000,0.00000").append(NEWLINE)
         .toString();
-    LocationList locs = LocationList.create(pp1, pp2);
+    LocationList locs = LocationList.of(pp1, pp2);
     assertEquals(locStr, locs.toString());
   }
 
@@ -309,13 +309,13 @@ public class LocationListTests {
   @Test
   public final void length() {
     assertEquals(1479.6049574653778, locs1.length(), 0.0);
-    assertEquals(157.25055720494782, LocationList.create(pp1, pp2).length(), 0.0);
-    assertEquals(0.0, LocationList.create(p1).length(), 0.0);
+    assertEquals(157.25055720494782, LocationList.of(pp1, pp2).length(), 0.0);
+    assertEquals(0.0, LocationList.of(p1).length(), 0.0);
   }
 
   @Test
   public final void depth() {
-    LocationList locs = LocationList.create(
+    LocationList locs = LocationList.of(
         Location.create(0, 0, 0),
         Location.create(1, 1, 0),
         Location.create(2, 2, 1));

@@ -42,7 +42,7 @@ public class BoundsTests {
   public void toList() {
     Bounds b = new Bounds(MIN, MAX);
     LocationList bList = b.toList();
-    LocationList oList = LocationList.create(
+    LocationList oList = LocationList.of(
         MIN,
         Location.create(MIN_LAT, MAX_LON),
         MAX,

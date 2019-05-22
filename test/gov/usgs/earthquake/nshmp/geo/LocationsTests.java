@@ -516,7 +516,7 @@ public class LocationsTests {
     Location p2 = Location.create(-10.0, 10.0);
     Location p3 = Location.create(10.0, 10.0);
     Location p4 = Location.create(10.0, -10.0);
-    LocationList locs = LocationList.create(p1, p2, p3, p4);
+    LocationList locs = LocationList.of(p1, p2, p3, p4);
     Bounds b = Locations.bounds(locs);
     Location min = Location.create(-10.0, -10.0);
     Location max = Location.create(10.0, 10.0);

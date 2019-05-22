@@ -209,7 +209,7 @@ public interface LocationList extends List<Location> {
     }
     // replace last point to be exact
     resampled.set(resampled.size() - 1, this.last());
-    return LocationList.create(resampled);
+    return LocationList.copyOf(resampled);
   }
 
   /**
@@ -217,7 +217,7 @@ public interface LocationList extends List<Location> {
    * implementations avoid copying the list.
    */
   default LocationList reverse() {
-    return create(ImmutableList.copyOf(this).reverse());
+    return copyOf(ImmutableList.copyOf(this).reverse());
   }
 
   /**
@@ -229,7 +229,7 @@ public interface LocationList extends List<Location> {
   default LocationList translate(LocationVector vector) {
     // TODO consider adding translate to LocationVector
     // --> .map(vector::translate)
-    return create(this.stream()
+    return copyOf(this.stream()
         .map(loc -> Locations.location(loc, vector))
         .collect(ImmutableList.toImmutableList()));
 
@@ -250,19 +250,19 @@ public interface LocationList extends List<Location> {
    * @param locations to populate list with
    * @throws IllegalArgumentException if {@code locations} is empty
    */
-  static LocationList create(Location... locations) {
+  static LocationList of(Location... locations) {
     return builder().add(locations).build();
   }
 
   /**
    * Create a new {@code LocationList} containing the supplied
-   * {@code locations}. If possible, this method tries to avoid copying the
-   * supplied data.
+   * {@code locations}. If possible, this method avoids copying the supplied
+   * data.
    *
    * @param locations to populate list with
    * @throws IllegalArgumentException if {@code locations} is empty
    */
-  static LocationList create(Iterable<Location> locations) {
+  static LocationList copyOf(Iterable<Location> locations) {
     checkArgument(locations.iterator().hasNext(), "locations may not be empty");
     if (locations instanceof LocationList) {
       return (LocationList) locations;
@@ -284,7 +284,7 @@ public interface LocationList extends List<Location> {
    * @see Location#fromString(String)
    */
   static LocationList fromString(String s) {
-    return create(Iterables.transform(
+    return copyOf(Iterables.transform(
         WHITESPACE_SPLITTER.split(checkNotNull(s)),
         Location.stringConverter().reverse()));
   }

@@ -629,6 +629,19 @@ public final class DoubleData {
     }
     return collapsed;
   }
+  
+  /**
+   * Cumulate the values of {@code data} in place.
+   * 
+   * @param data to operate on
+   * @return a reference to the supplied {@code data}
+   */
+  public static double[] cumulate(double... data) {
+    for (int i = 1; i < data.length; i++) {
+      data[i] += data[i - 1];
+    }
+    return data;
+  }
 
   /**
    * Transform {@code data} by a {@code function} in place.
@@ -1163,20 +1176,71 @@ public final class DoubleData {
 
   /**
    * Ensure each {@code 0.0 ≤ weight ≤ 1.0} and
-   * {@code sum(weights) = 1.0 ± 0.0001}.
+   * {@code sum(weights) = 1.0 ± 0.0001}. This method permits zero-valued
+   * weights.
    *
    * @param weights to validate
    * @return a reference to the supplied {@code weights}
    */
   public static Collection<Double> checkWeights(Collection<Double> weights) {
+    return checkWeights(weights, true);
+  }
+
+  /**
+   * Ensure each {@code 0.0 ≤ weight ≤ 1.0} and
+   * {@code sum(weights) = 1.0 ± 0.0001}, optionally allowing zero-valued
+   * weights.
+   *
+   * @param weights to validate
+   * @return a reference to the supplied {@code weights}
+   */
+  public static Collection<Double> checkWeights(
+      Collection<Double> weights,
+      boolean allowZero) {
+
     for (double weight : weights) {
-      checkWeight(weight, true);
+      checkWeight(weight, allowZero);
     }
     double sum = sum(weights);
     checkArgument(DoubleMath.fuzzyEquals(sum, 1.0, WEIGHT_TOLERANCE),
         "Weights Σ %s = %s ≠ 1.0", weights, sum);
     return weights;
   }
+
+  /**
+   * Ensure each {@code 0.0 ≤ weight ≤ 1.0} and
+   * {@code sum(weights) = 1.0 ± 0.0001}, optionally allowing zero-valued
+   * weights.
+   *
+   * @param weights to validate
+   * @return a reference to the supplied {@code weights}
+   */
+  public static double[] checkWeights(double[] weights, Boolean allowZero) {
+    for (double weight : weights) {
+      checkWeight(weight, allowZero);
+    }
+
+    double sum = sum(weights);
+
+    checkArgument(DoubleMath.fuzzyEquals(sum, 1.0, WEIGHT_TOLERANCE),
+        "Weights Σ %s = %s ≠ 1.0", weights, sum);
+
+    return weights;
+  }
+
+  /**
+   * Ensure each {@code 0.0 ≤ weight ≤ 1.0} and
+   * {@code sum(weights) = 1.0 ± 0.0001}. This method permits zero-valued
+   * weights.
+   *
+   * @param weights to validate
+   * @return a reference to the supplied {@code weights}
+   */
+  public static double[] checkWeights(double[] weights) {
+    return checkWeights(weights, true);
+  }
+
+  
 
   /* * * * * * * * 2D & 3D ARRAYS EXTENSIONS * * * * * * * * */
 

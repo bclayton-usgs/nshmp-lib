@@ -4,7 +4,13 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static gov.usgs.earthquake.nshmp.Text.NEWLINE;
 
-import com.google.common.base.Function;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
@@ -12,12 +18,6 @@ import com.google.common.math.DoubleMath;
 import com.google.common.primitives.Doubles;
 
 import gov.usgs.earthquake.nshmp.Maths;
-
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Utilities for operating on {@code double}-valued data.

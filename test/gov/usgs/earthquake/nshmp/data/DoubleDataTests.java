@@ -360,7 +360,7 @@ public final class DoubleDataTests {
       assertArrayEquals(d3_expect[i], d3_actual[i], 0.0);
     }
   }
-  
+
   @Test
   public final void testCumulate() {
     double[] data = { 0.0, 2.0, 4.0, 6.0, 8.0 };
@@ -615,7 +615,7 @@ public final class DoubleDataTests {
   public final void testCheckWeight() {
     assertEquals(0.5, DoubleData.checkWeight(0.5), 0.0);
   }
-  
+
   @Test(expected = IllegalArgumentException.class)
   public final void testCheckWeight_IAE() {
     DoubleData.checkWeight(0.0);

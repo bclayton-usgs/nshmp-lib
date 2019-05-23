@@ -24,5 +24,5 @@ public class Sequence {
       map.put(key, (MutableXySequence) XySequence.copyOf(sequence));
     }
   }
-  
+
 }

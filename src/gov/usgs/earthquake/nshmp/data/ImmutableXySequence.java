@@ -138,7 +138,7 @@ class ImmutableXySequence implements XySequence {
         Arrays.equals(this.xs, that.xs));
     return that;
   }
-  
+
   /**
    * Returns a readable string representation of this sequence.
    */

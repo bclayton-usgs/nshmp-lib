@@ -144,20 +144,20 @@ public class LogicTreeTest {
     assertEquals(value.mean(), branch.value().mean(), 0);
     assertEquals(value.sigma(), branch.value().sigma(), 0);
   }
-  
+
   private static class GroundMotion {
     double mean;
     double sigma;
-    
+
     GroundMotion(double mean, double sigma) {
       this.mean = mean;
       this.sigma = sigma;
     }
-    
+
     double mean() {
       return mean;
     }
-    
+
     double sigma() {
       return sigma;
     }

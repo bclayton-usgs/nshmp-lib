@@ -180,7 +180,7 @@ public interface XySequence extends Iterable<XyPoint> {
     // NOTE TODO this will support mfd combining
     checkNotNull(sequence);
     checkArgument(checkNotNull(xs).length > 0);
-    
+
     Interpolator interpolator = Interpolator.builder()
         .build();
 
@@ -226,7 +226,7 @@ public interface XySequence extends Iterable<XyPoint> {
    * @return the {@code List} of x-values
    */
   public List<Double> xValues();
-  
+
   /**
    * Returns an immutable {@code List} of the sequence y-values.
    * @return the {@code List} of y-values

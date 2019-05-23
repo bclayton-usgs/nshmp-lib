@@ -95,7 +95,7 @@ final class MutableXySequence extends ImmutableXySequence {
       MutableXySequence.this.set(index, y);
     }
   }
-  
+
   class MutableXyIterator implements Iterator<XyPoint> {
     private final int size = size();
     private int caret = 0;

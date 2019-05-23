@@ -629,7 +629,7 @@ public final class DoubleData {
     }
     return collapsed;
   }
-  
+
   /**
    * Cumulate the values of {@code data} in place.
    * 
@@ -1239,8 +1239,6 @@ public final class DoubleData {
   public static double[] checkWeights(double[] weights) {
     return checkWeights(weights, true);
   }
-
-  
 
   /* * * * * * * * 2D & 3D ARRAYS EXTENSIONS * * * * * * * * */
 

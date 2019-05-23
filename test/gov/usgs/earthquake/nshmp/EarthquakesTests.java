@@ -121,7 +121,7 @@ public final class EarthquakesTests {
   public final void testSlip() {
     double fLength = 20 * 1000.0; // 20 km
     double fWidth = 10 * 1000.0; // 10 km
-    double moment = 1.2e17; 
+    double moment = 1.2e17;
     double slipExpect = 0.02; // 20 mm
     assertEquals(slipExpect, Earthquakes.slip(fLength * fWidth, moment), 0.0);
   }

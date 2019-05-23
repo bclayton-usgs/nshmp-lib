@@ -22,8 +22,8 @@ public interface LogicTree<T> extends Iterable<Branch<T>> {
    * For further consideration: serialization=, consider adding
    * LogicTree.asGraph(), see Guava graph classes
    * 
-   * specialized trees and builders: threePointTree (THREE_POINT
-   * | THREE_POINT_262) takes values (id, T, σ) | (id, double, σ)
+   * specialized trees and builders: threePointTree (THREE_POINT |
+   * THREE_POINT_262) takes values (id, T, σ) | (id, double, σ)
    */
 
   /**
@@ -95,14 +95,14 @@ public interface LogicTree<T> extends Iterable<Branch<T>> {
       double[] weights = branches.stream()
           .mapToDouble(Branch::weight)
           .toArray();
-      
+
       DoubleData.checkWeights(weights, false);
       DoubleData.cumulate(weights);
 
       return new RegularLogicTree<T>(branches, weights);
     }
   }
-  
+
   /**
    * Logic tree types.
    */
@@ -111,5 +111,5 @@ public interface LogicTree<T> extends Iterable<Branch<T>> {
     THREE_POINT_262,
     OFF;
   }
-  
+
 }

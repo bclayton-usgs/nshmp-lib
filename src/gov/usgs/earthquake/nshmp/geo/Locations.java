@@ -826,7 +826,7 @@ public final class Locations {
     double maxLat = min(loc.latitude + Δlat, LAT_RANGE.upperEndpoint());
     return new Rectangle2D.Double(minLon, minLat, maxLon - minLon, maxLat - minLat);
   }
-  
+
   /* Helper method for LocationList implementations */
   static String toStringHelper(LocationList locations) {
     return NEWLINE + Joiner.on(NEWLINE).join(locations) + NEWLINE;

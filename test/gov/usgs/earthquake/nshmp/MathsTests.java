@@ -23,7 +23,7 @@ public class MathsTests {
   public void epsilon() {
     assertEquals(1.5, Maths.epsilon(3.0, 2.0, 6.0), 0);
   }
-  
+
   @Test
   public void round() {
     assertEquals(3.14, Maths.round(Math.PI, 2), 0);

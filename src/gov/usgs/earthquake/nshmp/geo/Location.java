@@ -162,7 +162,7 @@ public final class Location implements Comparable<Location> {
    * contains fewer than 3 comma-separated values; any additional values in the
    * supplied string are ignored.
    */
-  public static Converter<Location, String> stringConverter() {
+  static Converter<Location, String> stringConverter() {
     return StringConverter.INSTANCE;
   }
 

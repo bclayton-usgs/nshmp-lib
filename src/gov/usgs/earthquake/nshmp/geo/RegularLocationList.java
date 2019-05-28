@@ -28,6 +28,7 @@ final class RegularLocationList extends ForwardingList<Location> implements Loca
 
   @Override
   public boolean equals(Object obj) {
+    // TODO this needs work
     return super.equals(obj) && (obj instanceof LocationList);
   }
 

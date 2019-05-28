@@ -18,8 +18,8 @@ import com.google.common.base.MoreObjects;
  * the same, the azimuth will likely change by some value other than 180°.
  *
  * <p>Although a {@code LocationVector} will function in any reference frame,
- * the convention in seismology and that adopted here is for depth to be
- * positive down.
+ * depths are defined as positive down, consistent with seismological
+ * convention.
  *
  * @author Peter Powers
  */

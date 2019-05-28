@@ -23,8 +23,8 @@ import com.google.common.primitives.Doubles;
  * not permit {@code null} elements.
  * 
  * <p>Consider using a {@link LocationList#builder() builder} if a list is being
- * compiled from numerous {@code Location}s that are not known in advance.
- * Otherwise, use static factory methods. A variety of additional methods exist
+ * compiled from numerous {@code Location}s that are not known in advance,
+ * otherwise, use static factory methods. A variety of additional methods exist
  * to create modified views or transforms of a {@code LocationList} (e.g.
  * {@link #resample(double)} , {@link #reverse()}, and
  * {@link #translate(LocationVector)}.
@@ -84,9 +84,8 @@ public interface LocationList extends List<Location> {
 
   /**
    * Compute the distances between each location in the list. The length of the
-   * returned array is {@code size() - 1} and may be empty if this list contains
-   * only one single location.
-   * @return
+   * returned array is {@code size() - 1} and may be empty if this list only
+   * contains a single location.
    */
   default double[] distances() {
     double[] distances = new double[size() - 1];
@@ -97,8 +96,7 @@ public interface LocationList extends List<Location> {
   }
 
   /**
-   * Lazily compute the bounds of the locations in the list. Method delegates to
-   * {@link Locations#bounds(Iterable)}.
+   * Lazily compute the bounds of the locations in the list.
    */
   default Bounds bounds() {
     return Locations.bounds(this);
@@ -188,8 +186,6 @@ public interface LocationList extends List<Location> {
      * 
      * TODO consder using round() instead of ceil() which will in some cases be
      * closer to the target spacing, albeit greater.
-     * 
-     * TODO consider immutList.Builder for resampled below
      */
 
     spacing = length / Math.ceil(length / spacing);

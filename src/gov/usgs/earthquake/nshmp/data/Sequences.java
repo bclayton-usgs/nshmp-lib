@@ -2,7 +2,7 @@ package gov.usgs.earthquake.nshmp.data;
 
 import java.util.Map;
 
-public class Sequence {
+public class Sequences {
 
   /**
    * Adds {@code this} sequence to any exisiting sequence for {@code key} in the

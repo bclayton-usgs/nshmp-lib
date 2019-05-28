@@ -21,10 +21,10 @@ import com.google.common.primitives.Doubles;
  * always return the sub-type {@link MutableXySequence} if the instance is, in
  * fact, mutable. Mutable sequences should not be considered thread safe.
  * 
- * <p>All data supplied to the factory methods in this interface
- * {@code MutableXySequence} are defensively copied unless it is not necessary to
- * do so. For instance, {@code *copyOf()} variants should be used where possible
- * as x-values will never be replicated in memory.
+ * <p>All data supplied to the factory methods in this interface are defensively
+ * copied unless it is not necessary to do so. For instance, {@code *copyOf()}
+ * variants should be used where possible as x-values will never be replicated
+ * in memory.
  *
  * @author Peter Powers
  * @see MutableXySequence

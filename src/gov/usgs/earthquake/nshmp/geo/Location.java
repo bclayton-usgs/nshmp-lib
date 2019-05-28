@@ -18,8 +18,8 @@ import gov.usgs.earthquake.nshmp.Maths;
 /**
  * A {@code Location} represents a point with reference to the earth's
  * ellipsoid. It is expressed in terms of longitude and latitude in decimal
- * degrees, and depth in km. As in seismology, the convention adopted here is
- * for depth to be positive-down, always. Locations may be defined using
+ * degrees, and depth in km. Location depth is always positive-down,
+ * consistent with seismological convention. Locations may be defined using
  * longitude values in the range: [-180°, 360°]. Location instances are
  * immutable.
  *
@@ -35,12 +35,19 @@ public final class Location implements Comparable<Location> {
   /*
    * Developer notes:
    * 
-   * Historically, this class has variably stored lon-lat values in decimal
-   * degrees or radians and then converted as needed for math operations and
-   * string representations. However, such conversions can be lossy due to
-   * double-precision operations, so it is prefereable to preserve both the
-   * original decimal degrees values used to initialize the location along with
-   * radian formatted values for computational efficiency.
+   * Historically, this class has at different times stored lon-lat values in
+   * decimal degrees or radians and then converted as needed for math operations
+   * and string representations. However, such conversions can be lossy due to
+   * double-precision operations, so we now opt to preserve both the original
+   * decimal degree values used to initialize the location along with radian
+   * formatted values for computational efficiency within the geo package.
+   * 
+   * Serialization: Most serialization of locations moving forward will be
+   * to/from GeoJSON coordinate arrays. The Location.fromString() method and
+   * GeoJSON utilities in this package ensure that the radian based values,
+   * which are not serialized, are recreated as needed. If 'standard' object
+   * deserialization is required, users should implement a deserilaizer that
+   * calls a constructor.
    */
 
   /** The latitude of this {@code Location} in decimal degrees. */
@@ -52,31 +59,33 @@ public final class Location implements Comparable<Location> {
   /** The depth of this {@code Location} in kilometers. */
   public final double depth;
 
-  final double latRad;
-  final double lonRad;
+  final transient double latRad;
+  final transient double lonRad;
 
   /**
-   * Create a new {@code Location} with the supplied longitude, latitude, and
-   * depth. This constructor is provided for backward compatibility but may be
-   * removed in a future release. Please use {@link #create(double, double)}
-   * instead.
+   * Create a new {@code Location} from the supplied latitude and longitude with
+   * a depth of 0 km. This constructor is provided for backward compatibility
+   * but may be removed in a future release. Please use
+   * {@link #create(double, double)} instead.
    * 
-   * @param latitude
-   * @param longitude
+   * @param latitude in decimal degrees
+   * @param longitude in decimal degrees
    */
   public Location(double latitude, double longitude) {
     this(latitude, longitude, 0.0);
   }
 
   /**
-   * Create a new {@code Location} with the supplied longitude, latitude, and
+   * Create a new {@code Location} from the supplied latitude, longitude, and
    * depth. This constructor is provided for backward compatibility but may be
    * removed in a future release. Please use
    * {@link #create(double, double, double)} instead.
    * 
-   * @param latitude
-   * @param longitude
-   * @param depth
+   * @param latitude in decimal degrees
+   * @param longitude in decimal degrees
+   * @param depth in km (positive down)
+   * @throws IllegalArgumentException if any supplied values are out of range
+   * @see Coordinates
    */
   public Location(double latitude, double longitude, double depth) {
     this.latitude = checkLatitude(latitude);
@@ -87,11 +96,13 @@ public final class Location implements Comparable<Location> {
   }
 
   /**
-   * Create a new {@code Location} with the supplied longitude and latitude and
+   * Create a new {@code Location} from the supplied latitude and longitude with
    * a depth of 0 km.
    *
    * @param latitude in decimal degrees
    * @param longitude in decimal degrees
+   * @throws IllegalArgumentException if any supplied values are out of range
+   * @see Coordinates
    * @throws IllegalArgumentException if any supplied values are out of range
    * @see Coordinates
    */
@@ -120,7 +131,7 @@ public final class Location implements Comparable<Location> {
    * @param s string to parse
    * @throws NumberFormatException if {@code s} is unparseable
    * @throws IndexOutOfBoundsException if {@code s} contains fewer than 3
-   *         comma-separated values; any additional values in the suppied string
+   *         comma-separated values; any additional values in the supplied string
    *         are ignored
    * @see #toString()
    * @see #stringConverter()

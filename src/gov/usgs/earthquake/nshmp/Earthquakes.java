@@ -7,21 +7,14 @@ import com.google.common.collect.Range;
 /**
  * Constants and utility methods pertaining to properties of earthquakes.
  * 
- * <p><strong>Note:</strong> The various fields and methods of this class that
- * relate to earthquake depths follow the positive-down convention of
- * seismology.
+ * <p><strong>Note:</strong> The fields and methods of this class that relate to
+ * earthquake depths follow the positive-down convention of seismology.
  *
  * @author Peter Powers
  */
 public final class Earthquakes {
 
   private Earthquakes() {}
-
-  /*
-   * TODO possibly adjust Faults.CRUSTAL_DEPTH_RANGE CB14 restricts to 20 km and
-   * the PEER database is pretty comprehensive. Perhaps implement active and
-   * stable crust depth range.
-   */
 
   /** Supported earthquake depths: {@code [-5..700] km}. */
   public static final Range<Double> DEPTH_RANGE = Range.closed(-5.0, 700.0);

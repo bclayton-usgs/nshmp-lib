@@ -13,18 +13,21 @@ import java.util.function.Function;
 import com.google.common.primitives.Doubles;
 
 /**
- * Sequence of xy-value pairs that is iterable ascending in x. Once created, the
- * x-values of a sequence are immutable. This class provides static operations
- * to create instances of sequences that have both mutable and immutable
- * y-values. All data supplied to these operations is defensively copied unless
- * it is not necessary to do so. For instance, {@code *copyOf()} variants should
- * be used where possible as x-values will never be replicated in memory.
- *
- * <p>Although this class is not final, it can not be subclassed. Mutable
- * instances of this class are not thread-safe for operations that alter
- * y-values.
+ * A sequence of xy-value pairs that is iterable ascending in x. Once created,
+ * the x-values of a sequence are immutable.
+ * 
+ * <p>Sequences returned by the factory methods of this interface are guaranteed
+ * to also have immutable y-values. Methods and classes in this package will
+ * always return the sub-type {@link MutableXySequence} if the instance is, in
+ * fact, mutable. Mutable sequences should not be considered thread safe.
+ * 
+ * <p>All data supplied to the factory methods in this interface
+ * {@code MutableXySequence} are defensively copied unless it is not necessary to
+ * do so. For instance, {@code *copyOf()} variants should be used where possible
+ * as x-values will never be replicated in memory.
  *
  * @author Peter Powers
+ * @see MutableXySequence
  */
 public interface XySequence extends Iterable<XyPoint> {
 

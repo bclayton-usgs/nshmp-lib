@@ -1,119 +1,90 @@
 package gov.usgs.earthquake.nshmp.data;
 
-import static com.google.common.base.Preconditions.checkElementIndex;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.function.Function;
+import java.util.Collection;
 
 /**
  * Mutable variant of {@code XySequence}.
  *
  * @author Peter Powers
  */
-final class MutableXySequence extends ImmutableXySequence {
+public interface MutableXySequence extends XySequence {
 
-  MutableXySequence(double[] xs, double[] ys) {
-    super(xs, ys);
+  /**
+   * Create a new sequence with mutable y-values from the supplied value arrays.
+   * If the supplied y-value array is null, all y-values are initialized to 0.
+   *
+   * @param xs x-values to initialize sequence with
+   * @param ys y-values to initialize sequence with; may be null
+   * @return a mutable, {@code double[]}-backed sequence
+   * @throws NullPointerException if {@code xs} are null
+   * @throws IllegalArgumentException if {@code xs} and {@code ys} are not the
+   *         same size
+   * @throws IllegalArgumentException if {@code xs} does not increase
+   *         monotonically or contains repeated values
+   */
+  public static XySequence create(double[] xs, double[] ys) {
+    return Sequences.create(xs, ys, true);
   }
 
-  MutableXySequence(XySequence sequence, boolean clear) {
-    super(sequence, clear);
+  /**
+   * Create a new sequence with mutable y-values from the supplied value
+   * collections. If the y-value collection is null, all y-values are
+   * initialized to 0.
+   *
+   * @param xs x-values to initialize sequence with
+   * @param ys y-values to initialize sequence with; may be null
+   * @return a mutable, {@code double[]}-backed sequence
+   * @throws NullPointerException if {@code xs} are null
+   * @throws IllegalArgumentException if {@code xs} and {@code ys} are not the
+   *         same size
+   * @throws IllegalArgumentException if {@code xs} does not increase
+   *         monotonically or contains repeated values
+   */
+  public static XySequence create(
+      Collection<? extends Number> xs,
+      Collection<? extends Number> ys) {
+    return Sequences.create(xs, ys, true);
   }
 
-  @Override
-  public XyPoint min() {
-    return new MutablePoint(0);
+  /**
+   * Create a mutable copy of the supplied {@code sequence}.
+   *
+   * @param sequence to copy
+   * @return a mutable copy of the supplied {@code sequence}
+   * @throws NullPointerException if the supplied {@code sequence} is null
+   */
+  public static XySequence copyOf(XySequence sequence) {
+    return new MutableArrayXySequence(checkNotNull(sequence), false);
   }
 
-  @Override
-  public XyPoint max() {
-    return new MutablePoint(size() - 1);
+  /**
+   * Create a mutable copy of the supplied {@code sequence} with all y-values
+   * reset to zero.
+   *
+   * @param sequence to copy
+   * @return a mutable copy of the supplied {@code sequence}
+   * @throws NullPointerException if the supplied {@code sequence} is null
+   */
+  public static XySequence emptyCopyOf(XySequence sequence) {
+    return new MutableArrayXySequence(checkNotNull(sequence), true);
   }
 
-  @Override
-  public XySequence transform(Function<Double, Double> function) {
-    DoubleData.transform(function, ys);
-    return this;
-  }
+  void set(int index, double value);
 
-  @Override
-  public Iterator<XyPoint> iterator() {
-    return new MutableXyIterator();
-  }
+  XySequence add(double term);
 
-  public void set(int index, double value) {
-    checkElementIndex(index, xs.length);
-    ys[index] = value;
-  }
+  XySequence add(double[] ys);
 
-  public XySequence add(double term) {
-    DoubleData.add(term, ys);
-    return this;
-  }
+  XySequence add(XySequence sequence);
 
-  public XySequence add(double[] ys) {
-    DoubleData.add(this.ys, ys);
-    return this;
-  }
+  XySequence multiply(double scale);
 
-  public XySequence add(XySequence sequence) {
-    // safe covariant cast
-    DoubleData.uncheckedAdd(ys, validateSequence((ImmutableXySequence) sequence).ys);
-    return this;
-  }
+  XySequence multiply(XySequence sequence);
 
-  public XySequence multiply(double scale) {
-    DoubleData.multiply(scale, ys);
-    return this;
-  }
+  XySequence complement();
 
-  public XySequence multiply(XySequence sequence) {
-    // safe covariant cast
-    DoubleData.uncheckedMultiply(ys, validateSequence((ImmutableXySequence) sequence).ys);
-    return this;
-  }
-
-  public XySequence complement() {
-    DoubleData.add(1, DoubleData.flip(ys));
-    return this;
-  }
-
-  public XySequence clear() {
-    Arrays.fill(ys, 0.0);
-    return this;
-  }
-
-  class MutablePoint extends Point implements XyPoint {
-
-    MutablePoint(int index) {
-      super(index);
-    }
-
-    @Override
-    public void set(double y) {
-      MutableXySequence.this.set(index, y);
-    }
-  }
-
-  class MutableXyIterator implements Iterator<XyPoint> {
-    private final int size = size();
-    private int caret = 0;
-
-    @Override
-    public boolean hasNext() {
-      return caret < size;
-    }
-
-    @Override
-    public XyPoint next() {
-      return new MutablePoint(caret++);
-    }
-
-    @Override
-    public void remove() {
-      throw new UnsupportedOperationException();
-    }
-  }
+  XySequence clear();
 
 }

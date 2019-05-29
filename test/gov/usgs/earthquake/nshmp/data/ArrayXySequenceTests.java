@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
-public class ImmutableXySequenceTests {
+public class ArrayXySequenceTests {
 
   @Test
   public final void testIsEmpty() {
@@ -13,7 +13,7 @@ public class ImmutableXySequenceTests {
     double[] xs = new double[] { 0, 1, 2, 3 };
     double[] ys = new double[] { -1, 0, 1, 0 };
 
-    XySequence xy = XySequence.createImmutable(xs, ys);
+    XySequence xy = XySequence.create(xs, ys);
     assertFalse(xy.isClear());
   }
 

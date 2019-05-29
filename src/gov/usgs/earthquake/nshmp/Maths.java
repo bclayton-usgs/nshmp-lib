@@ -7,8 +7,7 @@ import java.util.Arrays;
 import com.google.common.base.Converter;
 
 /**
- * Miscellaneous math utilities. In some cases, these methods obviate the need
- * for 3<sup>rd</sup> party imports.
+ * Miscellaneous math utilities.
  *
  * @author Peter Powers
  */

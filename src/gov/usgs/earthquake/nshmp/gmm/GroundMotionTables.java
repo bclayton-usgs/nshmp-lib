@@ -2,14 +2,14 @@ package gov.usgs.earthquake.nshmp.gmm;
 
 import static com.google.common.io.Resources.getResource;
 import static com.google.common.io.Resources.readLines;
+import static gov.usgs.earthquake.nshmp.Parsing.splitToDoubleList;
+import static gov.usgs.earthquake.nshmp.Parsing.splitToList;
+import static gov.usgs.earthquake.nshmp.Text.NEWLINE;
 import static gov.usgs.earthquake.nshmp.gmm.Imt.PGA;
 import static gov.usgs.earthquake.nshmp.gmm.Imt.PGV;
 import static gov.usgs.earthquake.nshmp.gmm.Imt.SA0P03;
 import static gov.usgs.earthquake.nshmp.gmm.Imt.SA0P3;
 import static gov.usgs.earthquake.nshmp.gmm.Imt.SA3P0;
-import static gov.usgs.earthquake.nshmp.Parsing.splitToDoubleList;
-import static gov.usgs.earthquake.nshmp.Parsing.splitToList;
-import static gov.usgs.earthquake.nshmp.Text.NEWLINE;
 import static java.lang.Math.log10;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -36,11 +36,11 @@ import com.google.common.collect.Maps;
 import com.google.common.io.LineProcessor;
 import com.google.common.primitives.Doubles;
 
+import gov.usgs.earthquake.nshmp.Parsing;
+import gov.usgs.earthquake.nshmp.Parsing.Delimiter;
 import gov.usgs.earthquake.nshmp.data.DoubleData;
 import gov.usgs.earthquake.nshmp.gmm.GmmUtils.CeusSiteClass;
 import gov.usgs.earthquake.nshmp.gmm.GroundMotionTables.GroundMotionTable.Position;
-import gov.usgs.earthquake.nshmp.Parsing;
-import gov.usgs.earthquake.nshmp.Parsing.Delimiter;
 
 /**
  * Utility class to load and fetch {@code GroundMotionModel} lookup tables.

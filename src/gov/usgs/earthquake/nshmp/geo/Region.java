@@ -18,9 +18,9 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 
-import gov.usgs.earthquake.nshmp.data.DoubleData;
 import gov.usgs.earthquake.nshmp.Maths;
 import gov.usgs.earthquake.nshmp.Named;
+import gov.usgs.earthquake.nshmp.data.DoubleData;
 
 /**
  * A {@code Region} is a polygonal area on the surface of the earth. The

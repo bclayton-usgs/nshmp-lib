@@ -24,14 +24,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import gov.usgs.earthquake.nshmp.geo.Location;
-import gov.usgs.earthquake.nshmp.gmm.GroundMotionModel;
-import gov.usgs.earthquake.nshmp.geo.json.Feature;
-import gov.usgs.earthquake.nshmp.geo.json.Properties;
-import gov.usgs.earthquake.nshmp.geo.json.Properties.Style;
 import gov.usgs.earthquake.nshmp.Maths;
 import gov.usgs.earthquake.nshmp.Named;
 import gov.usgs.earthquake.nshmp.NamedLocation;
+import gov.usgs.earthquake.nshmp.geo.Location;
+import gov.usgs.earthquake.nshmp.geo.json.Feature;
+import gov.usgs.earthquake.nshmp.geo.json.Properties;
+import gov.usgs.earthquake.nshmp.geo.json.Properties.Style;
+import gov.usgs.earthquake.nshmp.gmm.GroundMotionModel;
 
 /**
  * Site characteristics container. Take note of default values; the minimum
@@ -190,8 +190,8 @@ public class Site implements Named {
         .geoJsonProperties(feature.properties())
         .build();
   }
-  
-  // TODO is it worth considering the obove to process a List<Feature> 
+
+  // TODO is it worth considering the obove to process a List<Feature>
   // and reuse the Site builder
 
   /**
@@ -448,14 +448,14 @@ public class Site implements Named {
    * @param defaults The {@code CalcConfig} defaults
    * @return {@code Site}
    */
-//  static Site getGeoJsonSite(Feature feature, CalcConfig defaults) {
-//    Point geometry = feature.getGeometry().asPoint();
-//    Location loc = geometry.getLocation();
-//    Properties properties = feature.getProperties();
-//    Builder builder = Site.builder(defaults).location(loc);
-//    setSiteProperties(builder, properties);
-//    return builder.build();
-//  }
+  // static Site getGeoJsonSite(Feature feature, CalcConfig defaults) {
+  // Point geometry = feature.getGeometry().asPoint();
+  // Location loc = geometry.getLocation();
+  // Properties properties = feature.getProperties();
+  // Builder builder = Site.builder(defaults).location(loc);
+  // setSiteProperties(builder, properties);
+  // return builder.build();
+  // }
 
   /**
    * Set the {@link Builder}.
@@ -463,26 +463,27 @@ public class Site implements Named {
    * @param builder The {@code Builder}
    * @param properties The {@link Properties}
    */
-//  static void setSiteProperties(Site.Builder builder, Properties properties) {
-//    if (properties.hasProperty("title")) {
-//      builder.name(properties.getStringProperty("title"));
-//    }
-//
-//    if (properties.hasProperty(Site.Key.VS30)) {
-//      builder.vs30(properties.getDoubleProperty(Site.Key.VS30));
-//    }
-//
-//    if (properties.hasProperty(Site.Key.VS_INF)) {
-//      builder.vsInferred(properties.getBooleanProperty(Site.Key.VS_INF));
-//    }
-//
-//    if (properties.hasProperty(Site.Key.Z1P0)) {
-//      builder.z1p0(properties.getDoubleProperty(Site.Key.Z1P0));
-//    }
-//
-//    if (properties.hasProperty(Site.Key.Z2P5)) {
-//      builder.z2p5(properties.getDoubleProperty(Site.Key.Z2P5));
-//    }
-//  }
+  // static void setSiteProperties(Site.Builder builder, Properties properties)
+  // {
+  // if (properties.hasProperty("title")) {
+  // builder.name(properties.getStringProperty("title"));
+  // }
+  //
+  // if (properties.hasProperty(Site.Key.VS30)) {
+  // builder.vs30(properties.getDoubleProperty(Site.Key.VS30));
+  // }
+  //
+  // if (properties.hasProperty(Site.Key.VS_INF)) {
+  // builder.vsInferred(properties.getBooleanProperty(Site.Key.VS_INF));
+  // }
+  //
+  // if (properties.hasProperty(Site.Key.Z1P0)) {
+  // builder.z1p0(properties.getDoubleProperty(Site.Key.Z1P0));
+  // }
+  //
+  // if (properties.hasProperty(Site.Key.Z2P5)) {
+  // builder.z2p5(properties.getDoubleProperty(Site.Key.Z2P5));
+  // }
+  // }
 
 }

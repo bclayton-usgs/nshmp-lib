@@ -135,7 +135,7 @@ class CombinedGmm implements GroundMotionModel {
       super(imt, CEUS_2018);
     }
   }
-  
+
   private static final Map<Gmm, Double> WUS_2014_4P1 = ImmutableMap.<Gmm, Double> builder()
       .put(ASK_14, 0.22)
       .put(BSSA_14, 0.22)

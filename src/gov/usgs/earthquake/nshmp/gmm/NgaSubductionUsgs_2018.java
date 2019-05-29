@@ -15,8 +15,8 @@ import java.util.Map;
 import com.google.common.collect.Range;
 
 import gov.usgs.earthquake.nshmp.Earthquakes;
-import gov.usgs.earthquake.nshmp.gmm.GmmInput.Constraints;
 import gov.usgs.earthquake.nshmp.Maths;
+import gov.usgs.earthquake.nshmp.gmm.GmmInput.Constraints;
 
 /**
  * Abstract implementation of the preliminary PEER NGA-Subduction ground motion

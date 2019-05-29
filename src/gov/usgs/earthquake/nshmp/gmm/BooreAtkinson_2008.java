@@ -144,23 +144,22 @@ public final class BooreAtkinson_2008 implements GroundMotionModel {
 
     // Site term
     double Fs = calcSite(c, pga4nl, in.vs30);
-    
+
     // Total Model
     return Fm + Fd + Fs;
   }
-  
-  /** 
-   * Package visible site amplification model. This model
-   * is appropriate for use with other GMMs where the reference rock
-   * site condition has Vs30=760.
+
+  /**
+   * Package visible site amplification model. This model is appropriate for use
+   * with other GMMs where the reference rock site condition has Vs30=760.
    */
   double siteAmp(double lnPga, double vs30) {
     return calcSite(coeffs, lnPga, vs30);
   }
-  
+
   /* Site term */
   private static double calcSite(Coefficients c, double lnPga, double vs30) {
-    
+
     double Flin = c.b_lin * log(vs30 / Vref);
 
     double bnl = 0.0; // vs30 >= 760 case

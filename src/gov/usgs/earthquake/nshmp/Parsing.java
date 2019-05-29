@@ -22,6 +22,8 @@ import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.function.Function;
 
+import javax.xml.crypto.Data;
+
 import org.w3c.dom.Comment;
 import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
@@ -41,7 +43,6 @@ import com.google.common.primitives.Ints;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import gov.usgs.earthquake.nshmp.data.DoubleData;
 import gov.usgs.earthquake.nshmp.data.Indexing;
 
 /**
@@ -627,7 +628,7 @@ public final class Parsing {
       boolean brackets, boolean cleanZeros) {
     String base = Joiner.on(delimiter).join(
         Iterables.transform(
-            values, 
+            values,
             new FormatDoubleFunction(format, cleanZeros)::apply));
     return brackets ? addBrackets(base) : base;
   }

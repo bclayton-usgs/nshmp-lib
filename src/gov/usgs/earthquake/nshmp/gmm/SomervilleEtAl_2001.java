@@ -1,10 +1,10 @@
 package gov.usgs.earthquake.nshmp.gmm;
 
+import static gov.usgs.earthquake.nshmp.Maths.hypot;
 import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.MW;
 import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.RJB;
 import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.VS30;
 import static gov.usgs.earthquake.nshmp.gmm.GmmUtils.CeusSiteClass.HARD_ROCK;
-import static gov.usgs.earthquake.nshmp.Maths.hypot;
 import static java.lang.Math.log;
 
 import java.util.Map;

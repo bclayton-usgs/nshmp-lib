@@ -7,7 +7,6 @@ import static gov.usgs.earthquake.nshmp.gmm.FaultStyle.STRIKE_SLIP;
 import static gov.usgs.earthquake.nshmp.gmm.FaultStyle.UNKNOWN;
 import static gov.usgs.earthquake.nshmp.gmm.Imt.PGA;
 import static gov.usgs.earthquake.nshmp.gmm.Imt.SA0P02;
-import static java.lang.Math.exp;
 import static java.lang.Math.log;
 
 import java.io.BufferedReader;
@@ -19,9 +18,9 @@ import java.util.Map;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import gov.usgs.earthquake.nshmp.gmm.GroundMotionTables.GroundMotionTable;
 import gov.usgs.earthquake.nshmp.Parsing;
 import gov.usgs.earthquake.nshmp.Parsing.Delimiter;
+import gov.usgs.earthquake.nshmp.gmm.GroundMotionTables.GroundMotionTable;
 
 /**
  * Ground motion model (Gmm) utilities.

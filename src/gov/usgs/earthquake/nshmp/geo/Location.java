@@ -18,10 +18,9 @@ import gov.usgs.earthquake.nshmp.Maths;
 /**
  * A {@code Location} represents a point with reference to the earth's
  * ellipsoid. It is expressed in terms of longitude and latitude in decimal
- * degrees, and depth in km. Location depth is always positive-down,
- * consistent with seismological convention. Locations may be defined using
- * longitude values in the range: [-180°, 360°]. Location instances are
- * immutable.
+ * degrees, and depth in km. Location depth is always positive-down, consistent
+ * with seismological convention. Locations may be defined using longitude
+ * values in the range: [-180°, 360°]. Location instances are immutable.
  *
  * <p>Note that constructors and static factory methods take arguments in the
  * order: {@code [lat, lon, depth]}, which is inconsistent with {@code String}
@@ -131,8 +130,8 @@ public final class Location implements Comparable<Location> {
    * @param s string to parse
    * @throws NumberFormatException if {@code s} is unparseable
    * @throws IndexOutOfBoundsException if {@code s} contains fewer than 3
-   *         comma-separated values; any additional values in the supplied string
-   *         are ignored
+   *         comma-separated values; any additional values in the supplied
+   *         string are ignored
    * @see #toString()
    * @see #stringConverter()
    */

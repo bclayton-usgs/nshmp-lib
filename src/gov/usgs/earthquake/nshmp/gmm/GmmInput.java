@@ -2,6 +2,7 @@ package gov.usgs.earthquake.nshmp.gmm;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
+import static gov.usgs.earthquake.nshmp.Text.NEWLINE;
 import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.DIP;
 import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.MW;
 import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.RAKE;
@@ -15,7 +16,6 @@ import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.Z1P0;
 import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.Z2P5;
 import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.ZHYP;
 import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.ZTOP;
-import static gov.usgs.earthquake.nshmp.Text.NEWLINE;
 import static java.lang.Double.NaN;
 
 import java.util.BitSet;
@@ -31,9 +31,9 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Range;
 
-import gov.usgs.earthquake.nshmp.calc.Site;
 import gov.usgs.earthquake.nshmp.Earthquakes;
 import gov.usgs.earthquake.nshmp.Faults;
+import gov.usgs.earthquake.nshmp.calc.Site;
 import gov.usgs.earthquake.nshmp.eq.model.Distance;
 import gov.usgs.earthquake.nshmp.eq.model.Rupture;
 

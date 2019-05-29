@@ -27,8 +27,8 @@ import com.google.common.collect.Range;
 
 import gov.usgs.earthquake.nshmp.Earthquakes;
 import gov.usgs.earthquake.nshmp.Faults;
-import gov.usgs.earthquake.nshmp.gmm.GmmInput.Constraints;
 import gov.usgs.earthquake.nshmp.Maths;
+import gov.usgs.earthquake.nshmp.gmm.GmmInput.Constraints;
 
 /**
  * Implementation of the Campbell & Bozorgnia (2014) next generation ground
@@ -328,7 +328,7 @@ public class CampbellBozorgnia_2014 implements GroundMotionModel {
     }
 
     double z2p5Term = calcBasinTerm(c, z2p5);
-    
+
     return (basinAmpOnly && (z2p5Term < zRefTerm)) ? zRefTerm : z2p5Term;
   }
 

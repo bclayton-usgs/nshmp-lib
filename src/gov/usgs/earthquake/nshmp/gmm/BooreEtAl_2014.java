@@ -21,7 +21,6 @@ import com.google.common.collect.Range;
 
 import gov.usgs.earthquake.nshmp.Faults;
 import gov.usgs.earthquake.nshmp.gmm.GmmInput.Constraints;
-import gov.usgs.earthquake.nshmp.Maths;
 
 /**
  * Implementation of the Boore, Stewart, Seyhan, & Atkinson (2014) next

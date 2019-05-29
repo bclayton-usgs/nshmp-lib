@@ -1,7 +1,7 @@
 package gov.usgs.earthquake.nshmp.geo;
 
-import gov.usgs.earthquake.nshmp.Parsing;
 import gov.usgs.earthquake.nshmp.Maths;
+import gov.usgs.earthquake.nshmp.Parsing;
 
 /**
  * Identifiers for basic geographic directions.

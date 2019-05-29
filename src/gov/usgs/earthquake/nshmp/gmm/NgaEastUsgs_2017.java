@@ -26,14 +26,14 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Range;
 import com.google.common.primitives.Doubles;
 
+import gov.usgs.earthquake.nshmp.Maths;
+import gov.usgs.earthquake.nshmp.Parsing;
+import gov.usgs.earthquake.nshmp.Parsing.Delimiter;
 import gov.usgs.earthquake.nshmp.data.DoubleData;
 import gov.usgs.earthquake.nshmp.data.Interpolator;
 import gov.usgs.earthquake.nshmp.gmm.GmmInput.Constraints;
 import gov.usgs.earthquake.nshmp.gmm.GroundMotionTables.GroundMotionTable;
 import gov.usgs.earthquake.nshmp.gmm.GroundMotionTables.GroundMotionTable.Position;
-import gov.usgs.earthquake.nshmp.Parsing;
-import gov.usgs.earthquake.nshmp.Parsing.Delimiter;
-import gov.usgs.earthquake.nshmp.Maths;
 
 /**
  * Implementation of the PEER NGA-East for USGS ground motion model. This
@@ -48,11 +48,11 @@ import gov.usgs.earthquake.nshmp.Maths;
  * {@code MultiScalarGroundMotion}. A {@code MultiScalarGroundMotion} stores
  * arrays of means and sigmas with associated weights.
  * 
- * <p>This class manages implementations of 22 'seed' models, 19 of which
- * were used to generate (via Sammons mapping) the 17 NGA-East for USGS models
- * and associated weights, and 3 of which are updates. This class also handles
- * USGS logic tree of 14 of those seed models. Ground motions for most models
- * are computed via table lookups (SP16 is the exception).
+ * <p>This class manages implementations of 22 'seed' models, 19 of which were
+ * used to generate (via Sammons mapping) the 17 NGA-East for USGS models and
+ * associated weights, and 3 of which are updates. This class also handles USGS
+ * logic tree of 14 of those seed models. Ground motions for most models are
+ * computed via table lookups (SP16 is the exception).
  * 
  * <p>On it's own, NGA-East is a hard rock model returning results for a site
  * class where Vs30 = 3000 m/s. To accomodate other site classes, the Stewart et

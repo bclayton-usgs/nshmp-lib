@@ -23,8 +23,8 @@ import java.util.Map;
 
 import com.google.common.collect.Range;
 
-import gov.usgs.earthquake.nshmp.eq.TectonicSetting;
 import gov.usgs.earthquake.nshmp.Faults;
+import gov.usgs.earthquake.nshmp.eq.TectonicSetting;
 import gov.usgs.earthquake.nshmp.gmm.GmmInput.Constraints;
 
 /**

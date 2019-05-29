@@ -128,30 +128,30 @@ public final class Distance {
     // }
 
     // Check whether small values of distJB should really be zero
-//    if (distJB < surface.getAveGridSpacing()) { // check this first since
-      // the next steps could take
-      // time
+    // if (distJB < surface.getAveGridSpacing()) { // check this first since
+    // the next steps could take
+    // time
 
-      // first identify whether it's a frankel type surface
-      // boolean frankelTypeSurface=false;
-      // if(surface instanceof FrankelGriddedSurface) {
-      // frankelTypeSurface = true;
-      // }
-      // else if(surface instanceof GriddedSubsetSurface) {
-      // if(((GriddedSubsetSurface)surface).getParentSurface() instanceof
-      // FrankelGriddedSurface) {
-      // frankelTypeSurface = true;
-      // }
-      // }
+    // first identify whether it's a frankel type surface
+    // boolean frankelTypeSurface=false;
+    // if(surface instanceof FrankelGriddedSurface) {
+    // frankelTypeSurface = true;
+    // }
+    // else if(surface instanceof GriddedSubsetSurface) {
+    // if(((GriddedSubsetSurface)surface).getParentSurface() instanceof
+    // FrankelGriddedSurface) {
+    // frankelTypeSurface = true;
+    // }
+    // }
 
-      // if (frankelTypeSurface) {
-      // if (isDjbZeroFrankel(surface, distJB)) distJB = 0;
-      // } else {
-//      if (isDjbZero(surface.getPerimeter(), loc)) {
-//        distJB = 0;
-        // }
-//      }
-//    }
+    // if (frankelTypeSurface) {
+    // if (isDjbZeroFrankel(surface, distJB)) distJB = 0;
+    // } else {
+    // if (isDjbZero(surface.getPerimeter(), loc)) {
+    // distJB = 0;
+    // }
+    // }
+    // }
 
     if (distJB < surface.getAveGridSpacing() && isDjbZero(surface.getPerimeter(), loc)) {
       distJB = 0;

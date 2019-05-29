@@ -1,5 +1,6 @@
 package gov.usgs.earthquake.nshmp.gmm;
 
+import static gov.usgs.earthquake.nshmp.Maths.hypot;
 import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.MW;
 import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.RRUP;
 import static gov.usgs.earthquake.nshmp.gmm.GmmInput.Field.VS30;
@@ -19,7 +20,6 @@ import static gov.usgs.earthquake.nshmp.gmm.Imt.SA0P3;
 import static gov.usgs.earthquake.nshmp.gmm.Imt.SA1P0;
 import static gov.usgs.earthquake.nshmp.gmm.Imt.SA1P5;
 import static gov.usgs.earthquake.nshmp.gmm.Imt.SA2P0;
-import static gov.usgs.earthquake.nshmp.Maths.hypot;
 import static java.lang.Math.log10;
 
 import java.util.Map;

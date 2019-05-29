@@ -9,12 +9,12 @@ import static java.lang.Double.isNaN;
 import java.util.ArrayList;
 import java.util.List;
 
+import gov.usgs.earthquake.nshmp.Maths;
 import gov.usgs.earthquake.nshmp.data.MutableXySequence;
 import gov.usgs.earthquake.nshmp.data.XyPoint;
 import gov.usgs.earthquake.nshmp.data.XySequence;
 import gov.usgs.earthquake.nshmp.gmm.Imt;
 import gov.usgs.earthquake.nshmp.gmm.MultiScalarGroundMotion;
-import gov.usgs.earthquake.nshmp.Maths;
 
 /**
  * Uncertainty models govern how the values of a complementary cumulative normal

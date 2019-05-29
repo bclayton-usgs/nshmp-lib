@@ -23,8 +23,8 @@ import java.util.Map;
 import com.google.common.collect.Range;
 
 import gov.usgs.earthquake.nshmp.Faults;
-import gov.usgs.earthquake.nshmp.gmm.GmmInput.Constraints;
 import gov.usgs.earthquake.nshmp.Maths;
+import gov.usgs.earthquake.nshmp.gmm.GmmInput.Constraints;
 
 /**
  * Implementation of the Chiou & Youngs (2014) next generation attenuation

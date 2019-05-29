@@ -6,13 +6,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Strings.padEnd;
 import static com.google.common.base.Strings.repeat;
-import static gov.usgs.earthquake.nshmp.data.DoubleData.checkInRange;
-import static gov.usgs.earthquake.nshmp.data.XySequence.create;
-import static gov.usgs.earthquake.nshmp.data.XySequence.copyOf;
 import static gov.usgs.earthquake.nshmp.Parsing.enumsToString;
 import static gov.usgs.earthquake.nshmp.Text.LOG_INDENT;
 import static gov.usgs.earthquake.nshmp.Text.LOG_VALUE_COLUMN;
 import static gov.usgs.earthquake.nshmp.Text.NEWLINE;
+import static gov.usgs.earthquake.nshmp.data.DoubleData.checkInRange;
+import static gov.usgs.earthquake.nshmp.data.XySequence.copyOf;
+import static gov.usgs.earthquake.nshmp.data.XySequence.create;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.IOException;
@@ -1063,7 +1063,7 @@ public final class CalcConfig {
      * <p><b>Default:</b> {@link ThreadCount#ALL}
      */
     public final ThreadCount threadCount;
-    
+
     private Performance(
         boolean optimizeGrids,
         boolean smoothGrids,

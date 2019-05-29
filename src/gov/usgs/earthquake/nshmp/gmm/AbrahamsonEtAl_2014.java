@@ -19,11 +19,11 @@ import java.util.Map;
 
 import com.google.common.collect.Range;
 
-import gov.usgs.earthquake.nshmp.data.Interpolator;
 import gov.usgs.earthquake.nshmp.Earthquakes;
 import gov.usgs.earthquake.nshmp.Faults;
-import gov.usgs.earthquake.nshmp.gmm.GmmInput.Constraints;
 import gov.usgs.earthquake.nshmp.Maths;
+import gov.usgs.earthquake.nshmp.data.Interpolator;
+import gov.usgs.earthquake.nshmp.gmm.GmmInput.Constraints;
 
 /**
  * Implementation of the Abrahamson, Silva & Kamai (2014) next generation ground
@@ -334,7 +334,7 @@ public class AbrahamsonEtAl_2014 implements GroundMotionModel {
     double z1ref = exp(-7.67 / 4.0 * log((vsPow4 + A) / B)) / 1000.0; // km
 
     Interpolator interpolator = Interpolator.builder().build();
-    
+
     double[] vsCoeff = { c.a43, c.a44, c.a45, c.a46, c.a46 };
     double z1c = interpolator.findY(VS_BINS, vsCoeff, vs30);
     z1c *= log((z1p0 + 0.01) / (z1ref + 0.01));

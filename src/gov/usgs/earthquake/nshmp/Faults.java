@@ -19,7 +19,6 @@ import gov.usgs.earthquake.nshmp.geo.Location;
 import gov.usgs.earthquake.nshmp.geo.LocationList;
 import gov.usgs.earthquake.nshmp.geo.LocationVector;
 import gov.usgs.earthquake.nshmp.geo.Locations;
-import gov.usgs.earthquake.nshmp.Maths;
 
 /**
  * Constants and utility methods pertaining to faults.

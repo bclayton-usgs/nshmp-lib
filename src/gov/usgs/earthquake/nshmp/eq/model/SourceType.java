@@ -3,6 +3,8 @@ package gov.usgs.earthquake.nshmp.eq.model;
 import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.base.CaseFormat.UPPER_UNDERSCORE;
 
+import javax.xml.transform.Source;
+
 import com.google.common.base.CaseFormat;
 
 /**

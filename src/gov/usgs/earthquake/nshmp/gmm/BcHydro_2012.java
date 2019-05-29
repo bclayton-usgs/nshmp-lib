@@ -167,7 +167,7 @@ public abstract class BcHydro_2012 implements GroundMotionModel {
     double μAsk = calcMean(coeffs, isSlab(), pgaRock, in.Mw, in.rRup, in.zTop, in.vs30);
 
     if (!Double.isNaN(in.z2p5) && basinEffect()) {
-      
+
       double μRef = calcMean(coeffs, isSlab(), pgaRock, in.Mw, in.rRup, in.zTop, VS30_REF);
       double cbBasin = cb14basinAmp.basinDelta(in, VS30_REF);
       double μCb = μRef + cbBasin;

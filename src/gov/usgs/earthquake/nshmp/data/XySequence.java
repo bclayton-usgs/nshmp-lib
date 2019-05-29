@@ -130,7 +130,7 @@ public interface XySequence extends Iterable<XyPoint> {
     if (xs.length > 1) {
       checkArgument(areMonotonic(true, true, xs), "x-values do not increase monotonically");
     }
-    return mutable ? new MutableXySequence(xs, ys) : new ImmutableXySequence(xs, ys);
+    return mutable ? new MutableXySequence(xs, ys) : new ArrayXySequence(xs, ys);
   }
 
   /**
@@ -164,8 +164,8 @@ public interface XySequence extends Iterable<XyPoint> {
    * @throws NullPointerException if the supplied {@code sequence} is null
    */
   public static XySequence immutableCopyOf(XySequence sequence) {
-    return (sequence.getClass().equals(ImmutableXySequence.class)) ? sequence
-        : new ImmutableXySequence(sequence, false);
+    return (sequence.getClass().equals(ArrayXySequence.class)) ? sequence
+        : new ArrayXySequence(sequence, false);
   }
 
   /**

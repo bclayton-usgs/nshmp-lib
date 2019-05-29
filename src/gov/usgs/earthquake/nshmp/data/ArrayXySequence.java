@@ -18,17 +18,17 @@ import com.google.common.base.Joiner;
  *
  * @author Peter Powers
  */
-class ImmutableXySequence implements XySequence {
+class ArrayXySequence implements XySequence {
 
   final double[] xs;
   final double[] ys;
 
-  ImmutableXySequence(double[] xs, double[] ys) {
+  ArrayXySequence(double[] xs, double[] ys) {
     this.xs = xs;
     this.ys = ys;
   }
 
-  ImmutableXySequence(XySequence sequence, boolean clear) {
+  ArrayXySequence(XySequence sequence, boolean clear) {
     /*
      * This constructor provides the option to 'clear' (or zero-out) the
      * y-values when copying, however, in practice, it is only ever used when
@@ -37,7 +37,7 @@ class ImmutableXySequence implements XySequence {
      * The covariant cast below is safe as all implementations descend from this
      * class.
      */
-    ImmutableXySequence s = (ImmutableXySequence) sequence;
+    ArrayXySequence s = (ArrayXySequence) sequence;
     xs = s.xs;
     ys = clear ? new double[xs.length] : Arrays.copyOf(s.ys, s.ys.length);
   }
@@ -89,7 +89,7 @@ class ImmutableXySequence implements XySequence {
     checkState(!this.isClear(), "XySequence.trim() not permitted for 'clear' sequences");
     int minIndex = DoubleData.firstNonZeroIndex(ys);
     int maxIndex = DoubleData.lastNonZeroIndex(ys) + 1;
-    return new ImmutableXySequence(
+    return new ArrayXySequence(
         Arrays.copyOfRange(xs, minIndex, maxIndex),
         Arrays.copyOfRange(ys, minIndex, maxIndex));
   }
@@ -99,10 +99,10 @@ class ImmutableXySequence implements XySequence {
     if (this == obj) {
       return true;
     }
-    if (!(obj instanceof ImmutableXySequence)) {
+    if (!(obj instanceof ArrayXySequence)) {
       return false;
     }
-    ImmutableXySequence that = (ImmutableXySequence) obj;
+    ArrayXySequence that = (ArrayXySequence) obj;
     return Arrays.equals(this.xs, that.xs) && Arrays.equals(this.ys, that.ys);
   }
 
@@ -133,7 +133,7 @@ class ImmutableXySequence implements XySequence {
   /*
    * Check the x-value object references; if mismatched, compare values.
    */
-  ImmutableXySequence validateSequence(ImmutableXySequence that) {
+  ArrayXySequence validateSequence(ArrayXySequence that) {
     checkArgument(this.xs.hashCode() == that.xs.hashCode() ||
         Arrays.equals(this.xs, that.xs));
     return that;
@@ -179,7 +179,7 @@ class ImmutableXySequence implements XySequence {
 
     @Override
     public int size() {
-      return ImmutableXySequence.this.size();
+      return ArrayXySequence.this.size();
     }
 
     @Override
@@ -215,7 +215,7 @@ class ImmutableXySequence implements XySequence {
 
     @Override
     public int size() {
-      return ImmutableXySequence.this.size();
+      return ArrayXySequence.this.size();
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.function.Function;
  *
  * @author Peter Powers
  */
-final class MutableXySequence extends ImmutableXySequence {
+final class MutableXySequence extends ArrayXySequence {
 
   MutableXySequence(double[] xs, double[] ys) {
     super(xs, ys);
@@ -59,7 +59,7 @@ final class MutableXySequence extends ImmutableXySequence {
 
   public XySequence add(XySequence sequence) {
     // safe covariant cast
-    DoubleData.uncheckedAdd(ys, validateSequence((ImmutableXySequence) sequence).ys);
+    DoubleData.uncheckedAdd(ys, validateSequence((ArrayXySequence) sequence).ys);
     return this;
   }
 
@@ -70,7 +70,7 @@ final class MutableXySequence extends ImmutableXySequence {
 
   public XySequence multiply(XySequence sequence) {
     // safe covariant cast
-    DoubleData.uncheckedMultiply(ys, validateSequence((ImmutableXySequence) sequence).ys);
+    DoubleData.uncheckedMultiply(ys, validateSequence((ArrayXySequence) sequence).ys);
     return this;
   }
 

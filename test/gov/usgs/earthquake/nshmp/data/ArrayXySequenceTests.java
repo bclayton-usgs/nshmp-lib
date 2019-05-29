@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
-public class ImmutableXySequenceTests {
+public class ArrayXySequenceTests {
 
   @Test
   public final void testIsEmpty() {

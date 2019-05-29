@@ -286,7 +286,7 @@ public abstract class Interpolator {
     @Override
     public double findX(XySequence xys, double y) {
       // safe covariant cast
-      ImmutableXySequence ixys = (ImmutableXySequence) xys;
+      ArrayXySequence ixys = (ArrayXySequence) xys;
       return findX(ixys.xs, ixys.ys, y);
     }
 
@@ -305,7 +305,7 @@ public abstract class Interpolator {
     @Override
     public double findY(XySequence xys, double x) {
       // safe covariant cast
-      ImmutableXySequence ixys = (ImmutableXySequence) xys;
+      ArrayXySequence ixys = (ArrayXySequence) xys;
       return findY(ixys.xs, ixys.ys, x);
     }
 
@@ -330,7 +330,7 @@ public abstract class Interpolator {
     @Override
     public double[] findY(XySequence xys, double[] x) {
       // safe covariant cast
-      ImmutableXySequence ixys = (ImmutableXySequence) xys;
+      ArrayXySequence ixys = (ArrayXySequence) xys;
       return findY(ixys.xs, ixys.ys, x);
     }
   }

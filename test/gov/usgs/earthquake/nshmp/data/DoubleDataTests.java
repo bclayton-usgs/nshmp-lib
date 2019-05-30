@@ -7,21 +7,19 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Range;
-import com.google.common.primitives.Doubles;
-
-import gov.usgs.earthquake.nshmp.data.DoubleData;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import org.junit.Test;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Range;
+import com.google.common.primitives.Doubles;
 
 @SuppressWarnings("javadoc")
 public final class DoubleDataTests {

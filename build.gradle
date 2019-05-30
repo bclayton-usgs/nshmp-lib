@@ -23,7 +23,7 @@ sourceSets {
       srcDirs = ['src']
     }
     resources {
-     srcDirs = ['src']
+      srcDirs = ['src']
       exclude '**/*.java'
     }
   }
@@ -72,10 +72,8 @@ javadoc {
   options.addStringOption('Xdoclint:none', '-quiet')
   options.links(
     'https://docs.oracle.com/javase/8/docs/api/',
-    'https://google.github.io/guava/releases/23.0/api/docs/')
+    'https://google.github.io/guava/releases/26.0-jre/api/docs/')
   include 'gov/usgs/earthquake/nshmp/**'
-  exclude 'gov/usgs/earthquake/nshmp/etc/**'
-  exclude 'gov/usgs/earthquake/nshmp/internal/**'
 }
 
 /*

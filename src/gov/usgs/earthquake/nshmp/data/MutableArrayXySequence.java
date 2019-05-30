@@ -3,8 +3,9 @@ package gov.usgs.earthquake.nshmp.data;
 import static com.google.common.base.Preconditions.checkElementIndex;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.function.Function;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Mutable variant of {@code XySequence}.
@@ -38,8 +39,8 @@ final class MutableArrayXySequence extends ArrayXySequence implements MutableXyS
   }
 
   @Override
-  public Iterator<XyPoint> iterator() {
-    return new MutableXyIterator();
+  public Stream<XyPoint> stream() {
+    return IntStream.of(0, size() - 1).mapToObj(MutablePoint::new);
   }
 
   @Override
@@ -102,26 +103,6 @@ final class MutableArrayXySequence extends ArrayXySequence implements MutableXyS
     @Override
     public void set(double y) {
       MutableArrayXySequence.this.set(index, y);
-    }
-  }
-
-  class MutableXyIterator implements Iterator<XyPoint> {
-    private final int size = size();
-    private int caret = 0;
-
-    @Override
-    public boolean hasNext() {
-      return caret < size;
-    }
-
-    @Override
-    public XyPoint next() {
-      return new MutablePoint(caret++);
-    }
-
-    @Override
-    public void remove() {
-      throw new UnsupportedOperationException();
     }
   }
 

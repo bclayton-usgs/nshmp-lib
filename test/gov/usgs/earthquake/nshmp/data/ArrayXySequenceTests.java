@@ -13,9 +13,9 @@ import org.junit.rules.ExpectedException;
 @SuppressWarnings("javadoc")
 public class ArrayXySequenceTests {
 
-  static double[] xs = new double[] { 0, 1, 2, 3 };
-  static double[] ys = new double[] { -1, 10.5, 5.25, 2.5 };
-  static XySequence xy = XySequence.create(xs, ys);
+  private static double[] xs = new double[] { 0, 1, 2, 3 };
+  private static double[] ys = new double[] { -1, 10.5, 5.25, 2.5 };
+  private static XySequence xy = XySequence.create(xs, ys);
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();

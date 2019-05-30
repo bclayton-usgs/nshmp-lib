@@ -14,9 +14,9 @@ import org.junit.rules.ExpectedException;
 @SuppressWarnings("javadoc")
 public class MutableArrayXySequenceTests {
 
-  static double[] xs = new double[] { 0, 1, 2, 3 };
-  static double[] ys = new double[] { -1, 10.5, 5.25, 2.5 };
-  static MutableXySequence xy = MutableXySequence.create(xs, ys);
+  private static double[] xs = new double[] { 0, 1, 2, 3 };
+  private static double[] ys = new double[] { -1, 10.5, 5.25, 2.5 };
+  private static MutableXySequence xy = MutableXySequence.create(xs, ys);
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -124,10 +124,8 @@ public class MutableArrayXySequenceTests {
     /* set */
     MutableXySequence xySet = MutableXySequence.copyOf(xy).set(0, term);
     assertEquals(xySet.y(0), term, 0);
-  }
-
-  @Test
-  public final void pointTest() {
+    
+    /* point.set */
     MutableXySequence xyCopy = MutableXySequence.copyOf(xy);
     double setTerm = 5.5;
 

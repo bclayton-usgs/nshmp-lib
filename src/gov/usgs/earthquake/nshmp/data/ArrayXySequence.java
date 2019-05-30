@@ -82,7 +82,7 @@ class ArrayXySequence implements XySequence {
   }
 
   @Override
-  public final XySequence trim() {
+  public XySequence trim() {
     checkState(!this.isClear(), "XySequence.trim() not permitted for 'clear' sequences");
     int minIndex = DoubleData.firstNonZeroIndex(ys);
     int maxIndex = DoubleData.lastNonZeroIndex(ys) + 1;
@@ -124,7 +124,7 @@ class ArrayXySequence implements XySequence {
 
   @Override
   public Stream<XyPoint> stream() {
-    return IntStream.of(0, size() - 1).mapToObj(Point::new);
+    return IntStream.range(0, size()).mapToObj(Point::new);
   }
 
   /*

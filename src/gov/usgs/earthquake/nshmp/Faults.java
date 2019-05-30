@@ -4,20 +4,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static gov.usgs.earthquake.nshmp.data.DoubleData.checkInRange;
 import static gov.usgs.earthquake.nshmp.geo.Locations.azimuth;
 import static gov.usgs.earthquake.nshmp.geo.Locations.azimuthRad;
-import static gov.usgs.earthquake.nshmp.geo.Locations.horzDistance;
-import static gov.usgs.earthquake.nshmp.geo.Locations.linearDistanceFast;
-import static gov.usgs.earthquake.nshmp.geo.Locations.location;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 
 import gov.usgs.earthquake.nshmp.geo.Location;
 import gov.usgs.earthquake.nshmp.geo.LocationList;
-import gov.usgs.earthquake.nshmp.geo.LocationVector;
 import gov.usgs.earthquake.nshmp.geo.Locations;
 
 /**
@@ -118,9 +109,7 @@ public final class Faults {
    * {@link Locations#azimuth(Location, Location)}.
    *
    * <p>This approach has been shown to be as accurate as length-weighted angle
-   * averaging and is significantly faster; see <a
-   * href="https://opensha.org/trac/wiki/StrikeDirectionMethods"
-   * target="_top">StrikeDirectionMethods</a> for more information.
+   * averaging and is significantly faster.
    *
    * @param locs line for which to compute strike
    * @return strike direction in the range [0°, 360°)
@@ -148,9 +137,7 @@ public final class Faults {
    * {@link Locations#azimuth(Location, Location)}.
    *
    * <p>This approach has been shown to be as accurate as length-weighted angle
-   * averaging and is significantly faster; see <a
-   * href="https://opensha.org/trac/wiki/StrikeDirectionMethods"
-   * target="_top">StrikeDirectionMethods</a> for more information.
+   * averaging and is significantly faster.
    *
    * @param locs line for which to compute strike
    * @return strike direction in the range [0, 2π)
@@ -173,7 +160,7 @@ public final class Faults {
   }
 
   /**
-   * Returns the dip direction for the supplied line/trace assuming the
+   * Compute the dip direction for the supplied line/trace assuming the
    * right-hand rule (strike + 90°).
    *
    * @param locs line for which to compute dip direction
@@ -201,110 +188,6 @@ public final class Faults {
 
   public static double dipDirectionRad(double strikeRad) {
     return (strikeRad + Maths.PI_BY_2) % Maths.TWO_PI;
-  }
-
-  /* <b>x</b>-axis unit normal vector [1,0,0] */
-  private static final double[] VX_UNIT_NORMAL = { 1.0, 0.0, 0.0 };
-  /* <b>y</b>-axis unit normal vector [0,1,0] */
-  private static final double[] VY_UNIT_NORMAL = { 0.0, 1.0, 0.0 };
-  /* <b>z</b>-axis unit normal vector [0,0,1] */
-  private static final double[] VZ_UNIT_NORMAL = { 0.0, 0.0, 1.0 };
-
-  /**
-   * Calculates a slip vector from strike, dip, and rake information provided.
-   * @param strikeDipRake array
-   * @return double[x,y,z] array for slip vector.
-   */
-  public static double[] getSlipVector(double[] strikeDipRake) {
-    // start with y-axis unit normal on a horizontal plane
-    double[] startVector = VY_UNIT_NORMAL;
-    // rotate rake amount about z-axis (negative axial rotation)
-    double[] rakeRotVector = vectorMatrixMultiply(zAxisRotMatrix(-strikeDipRake[2]),
-        startVector);
-    // rotate dip amount about y-axis (negative axial rotation)
-    double[] dipRotVector = vectorMatrixMultiply(yAxisRotMatrix(-strikeDipRake[1]),
-        rakeRotVector);
-    // rotate strike amount about z-axis (positive axial rotation)
-    double[] strikeRotVector = vectorMatrixMultiply(zAxisRotMatrix(strikeDipRake[0]),
-        dipRotVector);
-    return strikeRotVector;
-  }
-
-  /*
-   * Multiplies the vector provided with a matrix. Useful for rotations.
-   *
-   * @param matrix double[][] matrix (likely one of the rotation matrices from
-   * this class).
-   *
-   * @param vector double[x,y,z] to be modified.
-   */
-  private static double[] vectorMatrixMultiply(double[][] matrix, double[] vector) {
-    double[] rotatedVector = new double[3];
-    for (int i = 0; i < 3; i++) {
-      rotatedVector[i] = vector[0] * matrix[i][0] + vector[1] * matrix[i][1] + vector[2] *
-          matrix[i][2];
-    }
-    return rotatedVector;
-  }
-
-  /*
-   * Returns a rotation matrix about the x axis in a right-handed coordinate
-   * system for a given theta. Note that these are coordinate transformations
-   * and that a positive (anticlockwise) rotation of a vector is the same as a
-   * negative rotation of the reference frame.
-   *
-   * @param theta axial rotation in degrees.
-   *
-   * @return double[][] rotation matrix.
-   */
-  private static double[][] xAxisRotMatrix(double theta) {
-    // @formatter:off
-    double thetaRad = Math.toRadians(theta);
-    double[][] rotMatrix= {{ 1.0 ,                 0.0 ,                0.0 },
-        { 0.0 ,  Math.cos(thetaRad) , Math.sin(thetaRad) },
-        { 0.0 , -Math.sin(thetaRad) , Math.cos(thetaRad) }};
-    return rotMatrix;
-    // @formatter:on
-  }
-
-  /*
-   * Returns a rotation matrix about the y axis in a right-handed coordinate
-   * system for a given theta. Note that these are coordinate transformations
-   * and that a positive (anticlockwise) rotation of a vector is the same as a
-   * negative rotation of the reference frame.
-   *
-   * @param theta axial rotation in degrees.
-   *
-   * @return double[][] rotation matrix.
-   */
-  private static double[][] yAxisRotMatrix(double theta) {
-    // @formatter:off
-    double thetaRad = Math.toRadians(theta);
-    double[][] rotMatrix= {{ Math.cos(thetaRad) , 0.0 , -Math.sin(thetaRad) },
-        {                0.0 , 1.0 ,                 0.0 },
-        { Math.sin(thetaRad) , 0.0 ,  Math.cos(thetaRad) }};
-    return rotMatrix;
-    // @formatter:on
-  }
-
-  /*
-   * Returns a rotation matrix about the z axis in a right-handed coordinate
-   * system for a given theta. Note that these are coordinate transformations
-   * and that a positive (anticlockwise) rotation of a vector is the same as a
-   * negative rotation of the reference frame.
-   *
-   * @param theta axial rotation in degrees.
-   *
-   * @return double[][] rotation matrix.
-   */
-  private static double[][] zAxisRotMatrix(double theta) {
-    // @formatter:off
-    double thetaRad = Math.toRadians(theta);
-    double[][] rotMatrix= {{  Math.cos(thetaRad) , Math.sin(thetaRad) , 0.0 },
-        { -Math.sin(thetaRad) , Math.cos(thetaRad) , 0.0 },
-        {                 0.0 ,                0.0 , 1.0 }};
-    return rotMatrix;
-    // @formatter:on
   }
 
 }

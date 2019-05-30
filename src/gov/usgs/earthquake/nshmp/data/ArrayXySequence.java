@@ -14,7 +14,7 @@ import java.util.RandomAccess;
 import com.google.common.base.Joiner;
 
 /**
- * The default, immutable, array-backed implementation of {@code XySequence}.
+ * An immutable, array-backed implementation of {@code XySequence}.
  *
  * @author Peter Powers
  */
@@ -48,8 +48,7 @@ class ArrayXySequence implements XySequence {
     return xUnchecked(index);
   }
 
-  @Override
-  public final double xUnchecked(int index) {
+  final double xUnchecked(int index) {
     return xs[index];
   }
 
@@ -59,8 +58,7 @@ class ArrayXySequence implements XySequence {
     return yUnchecked(index);
   }
 
-  @Override
-  public final double yUnchecked(int index) {
+  final double yUnchecked(int index) {
     return ys[index];
   }
 
@@ -117,19 +115,19 @@ class ArrayXySequence implements XySequence {
 
   @Override
   public List<Double> xValues() {
-    return new X_List();
+    return new XList();
   }
 
   @Override
   public List<Double> yValues() {
-    return new Y_List();
+    return new YList();
   }
 
   @Override
   public Iterator<XyPoint> iterator() {
     return new XyIterator();
   }
-
+  
   /*
    * Check the x-value object references; if mismatched, compare values.
    */
@@ -139,9 +137,7 @@ class ArrayXySequence implements XySequence {
     return that;
   }
 
-  /**
-   * Returns a readable string representation of this sequence.
-   */
+  @Override
   public String toString() {
     return new StringBuilder(getClass().getSimpleName())
         .append(":")
@@ -150,6 +146,7 @@ class ArrayXySequence implements XySequence {
         .toString();
   }
 
+  @Deprecated
   class XyIterator implements Iterator<XyPoint> {
     private final int size = size();
     private int caret = 0;
@@ -170,7 +167,8 @@ class ArrayXySequence implements XySequence {
     }
   }
 
-  final class X_List extends AbstractList<Double> implements RandomAccess {
+  @Deprecated
+  final class XList extends AbstractList<Double> implements RandomAccess {
 
     @Override
     public Double get(int index) {
@@ -206,7 +204,8 @@ class ArrayXySequence implements XySequence {
     }
   }
 
-  final class Y_List extends AbstractList<Double> implements RandomAccess {
+  @Deprecated
+  final class YList extends AbstractList<Double> implements RandomAccess {
 
     @Override
     public Double get(int index) {
@@ -269,7 +268,6 @@ class ArrayXySequence implements XySequence {
     public String toString() {
       return "XyPoint: [" + x() + ", " + y() + "]";
     }
-
   }
 
 }

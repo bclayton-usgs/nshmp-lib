@@ -43,9 +43,10 @@ final class MutableArrayXySequence extends ArrayXySequence implements MutableXyS
   }
 
   @Override
-  public void set(int index, double value) {
+  public MutableXySequence set(int index, double value) {
     checkElementIndex(index, xs.length);
     ys[index] = value;
+    return this;
   }
 
   @Override
@@ -75,7 +76,7 @@ final class MutableArrayXySequence extends ArrayXySequence implements MutableXyS
 
   @Override
   public MutableXySequence multiply(XySequence sequence) {
-    // safe covariant cast
+    /* Safe covariant cast */
     DoubleData.uncheckedMultiply(ys, validateSequence((ArrayXySequence) sequence).ys);
     return this;
   }

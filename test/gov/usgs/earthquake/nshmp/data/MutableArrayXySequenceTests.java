@@ -124,7 +124,7 @@ public class MutableArrayXySequenceTests {
     /* set */
     MutableXySequence xySet = MutableXySequence.copyOf(xy).set(0, term);
     assertEquals(xySet.y(0), term, 0);
-    
+
     /* point.set */
     MutableXySequence xyCopy = MutableXySequence.copyOf(xy);
     double setTerm = 5.5;

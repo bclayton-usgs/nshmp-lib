@@ -11,7 +11,6 @@ import java.util.List;
 
 import gov.usgs.earthquake.nshmp.Maths;
 import gov.usgs.earthquake.nshmp.data.MutableXySequence;
-import gov.usgs.earthquake.nshmp.data.XyPoint;
 import gov.usgs.earthquake.nshmp.data.XySequence;
 import gov.usgs.earthquake.nshmp.gmm.Imt;
 import gov.usgs.earthquake.nshmp.gmm.MultiScalarGroundMotion;
@@ -54,9 +53,7 @@ public enum ExceedanceModel {
 
     @Override
     XySequence exceedance(double μ, double σ, double n, Imt imt, XySequence sequence) {
-      for (XyPoint p : sequence) {
-        p.set(Maths.stepFunction(μ, p.x()));
-      }
+      sequence.stream().forEach(p -> p.set(Maths.stepFunction(μ, p.x())));
       return sequence;
     }
   },
@@ -168,9 +165,7 @@ public enum ExceedanceModel {
 
     @Override
     XySequence exceedance(double μ, double σ, double n, Imt imt, XySequence sequence) {
-      for (XyPoint p : sequence) {
-        p.set(exceedance(μ, σ, n, imt, p.x()));
-      }
+      sequence.stream().forEach(p -> p.set(exceedance(μ, σ, n, imt, p.x())));
       return sequence;
     }
   },
@@ -354,9 +349,7 @@ public enum ExceedanceModel {
       double pHi,
       double pLo) {
 
-    for (XyPoint p : sequence) {
-      p.set(boundedCcdFn(μ, σ, p.x(), pHi, pLo));
-    }
+    sequence.stream().forEach(p -> p.set(boundedCcdFn(μ, σ, p.x(), pHi, pLo)));
     return sequence;
   }
 
@@ -469,9 +462,7 @@ public enum ExceedanceModel {
     }
 
     XySequence get(double μ, double σ, XySequence sequence) {
-      for (XyPoint p : sequence) {
-        p.set(get(μ, σ, p.x()));
-      }
+      sequence.stream().forEach(p -> p.set(get(μ, σ, p.x())));
       return sequence;
     }
   }

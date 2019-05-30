@@ -49,45 +49,45 @@ final class MutableArrayXySequence extends ArrayXySequence implements MutableXyS
   }
 
   @Override
-  public XySequence add(double term) {
+  public MutableXySequence add(double term) {
     DoubleData.add(term, ys);
     return this;
   }
 
   @Override
-  public XySequence add(double[] ys) {
+  public MutableXySequence add(double[] ys) {
     DoubleData.add(this.ys, ys);
     return this;
   }
 
   @Override
-  public XySequence add(XySequence sequence) {
+  public MutableXySequence add(XySequence sequence) {
     // safe covariant cast
     DoubleData.uncheckedAdd(ys, validateSequence((ArrayXySequence) sequence).ys);
     return this;
   }
 
   @Override
-  public XySequence multiply(double scale) {
+  public MutableXySequence multiply(double scale) {
     DoubleData.multiply(scale, ys);
     return this;
   }
 
   @Override
-  public XySequence multiply(XySequence sequence) {
+  public MutableXySequence multiply(XySequence sequence) {
     // safe covariant cast
     DoubleData.uncheckedMultiply(ys, validateSequence((ArrayXySequence) sequence).ys);
     return this;
   }
 
   @Override
-  public XySequence complement() {
+  public MutableXySequence complement() {
     DoubleData.add(1, DoubleData.flip(ys));
     return this;
   }
 
   @Override
-  public XySequence clear() {
+  public MutableXySequence clear() {
     Arrays.fill(ys, 0.0);
     return this;
   }

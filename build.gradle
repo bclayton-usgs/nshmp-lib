@@ -13,6 +13,7 @@ dependencies {
     /* skip optional guava dependencies */
     transitive = false
   }
+  compile 'com.google.code.gson:gson:2.8.5'
   testCompile 'junit:junit:4.12'
 }
 

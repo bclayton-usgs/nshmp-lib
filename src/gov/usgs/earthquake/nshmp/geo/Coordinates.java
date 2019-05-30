@@ -1,10 +1,10 @@
 package gov.usgs.earthquake.nshmp.geo;
 
+import static gov.usgs.earthquake.nshmp.data.DoubleData.checkInRange;
+
 import com.google.common.collect.Range;
 
 import gov.usgs.earthquake.nshmp.Maths;
-
-import static gov.usgs.earthquake.nshmp.data.DoubleData.checkInRange;
 
 /**
  * Constants and utility methods pertaining to geographic coordinates.

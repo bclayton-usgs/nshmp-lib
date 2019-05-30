@@ -601,6 +601,41 @@ public final class DoubleData {
   }
 
   /**
+   * Compute the weighted sum of the supplied data. Weights are not constrained
+   * to sum to 1.0.
+   * 
+   * @param data to sum
+   * @param weights to apply
+   * @return the weighted sum of the supplied values
+   */
+  public static double weightedSum(double[] data, double[] weights) {
+    checkSizes(data, weights);
+    double sum = 0.0;
+    for (int i = 0; i < data.length; i++) {
+      sum += data[i] * weights[i];
+    }
+    return sum;
+  }
+
+  /**
+   * Compute a weighted sum of the supplied data in linear space, given data
+   * that is in natural log space. Returned sum is in natural log space. Weights
+   * are not constrained to sum to 1.0.
+   * 
+   * @param data to sum (natural log values)
+   * @param weights to apply
+   * @return the weighted sum of the supplied values
+   */
+  public static double weightedSumLn(double[] data, double[] weights) {
+    checkSizes(data, weights);
+    double sum = 0.0;
+    for (int i = 0; i < data.length; i++) {
+      sum += Math.exp(data[i]) * weights[i];
+    }
+    return Math.log(sum);
+  }
+
+  /**
    * Sum the arrays in the 2nd dimension of {@code data} into a new 1-D array.
    * 
    * @param data to collapse

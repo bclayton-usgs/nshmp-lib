@@ -24,8 +24,8 @@ public interface MutableXySequence extends XySequence {
    * @throws IllegalArgumentException if {@code xs} does not increase
    *         monotonically or contains repeated values
    */
-  public static XySequence create(double[] xs, double[] ys) {
-    return Sequences.create(xs, ys, true);
+  public static MutableXySequence create(double[] xs, double[] ys) {
+    return (MutableXySequence) Sequences.create(xs, ys, true);
   }
 
   /**
@@ -42,10 +42,10 @@ public interface MutableXySequence extends XySequence {
    * @throws IllegalArgumentException if {@code xs} does not increase
    *         monotonically or contains repeated values
    */
-  public static XySequence create(
+  public static MutableXySequence create(
       Collection<? extends Number> xs,
       Collection<? extends Number> ys) {
-    return Sequences.create(xs, ys, true);
+    return (MutableXySequence) Sequences.create(xs, ys, true);
   }
 
   /**
@@ -55,7 +55,7 @@ public interface MutableXySequence extends XySequence {
    * @return a mutable copy of the supplied {@code sequence}
    * @throws NullPointerException if the supplied {@code sequence} is null
    */
-  public static XySequence copyOf(XySequence sequence) {
+  public static MutableXySequence copyOf(XySequence sequence) {
     return new MutableArrayXySequence(checkNotNull(sequence), false);
   }
 
@@ -67,24 +67,24 @@ public interface MutableXySequence extends XySequence {
    * @return a mutable copy of the supplied {@code sequence}
    * @throws NullPointerException if the supplied {@code sequence} is null
    */
-  public static XySequence emptyCopyOf(XySequence sequence) {
+  public static MutableXySequence emptyCopyOf(XySequence sequence) {
     return new MutableArrayXySequence(checkNotNull(sequence), true);
   }
 
   void set(int index, double value);
 
-  XySequence add(double term);
+  MutableXySequence add(double term);
 
-  XySequence add(double[] ys);
+  MutableXySequence add(double[] ys);
 
-  XySequence add(XySequence sequence);
+  MutableXySequence add(XySequence sequence);
 
-  XySequence multiply(double scale);
+  MutableXySequence multiply(double scale);
 
-  XySequence multiply(XySequence sequence);
+  MutableXySequence multiply(XySequence sequence);
 
-  XySequence complement();
+  MutableXySequence complement();
 
-  XySequence clear();
+  MutableXySequence clear();
 
 }

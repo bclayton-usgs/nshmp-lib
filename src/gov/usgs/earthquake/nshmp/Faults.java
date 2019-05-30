@@ -2,8 +2,6 @@ package gov.usgs.earthquake.nshmp;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static gov.usgs.earthquake.nshmp.data.DoubleData.checkInRange;
-import static gov.usgs.earthquake.nshmp.geo.Locations.azimuth;
-import static gov.usgs.earthquake.nshmp.geo.Locations.azimuthRad;
 
 import com.google.common.collect.Range;
 
@@ -77,117 +75,139 @@ public final class Faults {
     return trace;
   }
 
-  /*
-   * 
-   * 
-   * 
-   * 
-   * 
-   * 
-   * 
-   * TODO Everything below needs review
-   */
-
-
-
   /**
    * Generic model for hypocentral depth returns a value that is halfway between
    * the top and bottom of a fault, parameterized by its dip, width, and depth.
    * This method performs no input validation.
    *
-   * @param dip of the fault plane
+   * @param dip of the fault plane in decimal degrees
    * @param width of the fault plane
-   * @param zTop depth to the fault plane
+   * @param zTop depth to the fault plane (positive down)
    */
   public static double hypocentralDepth(double dip, double width, double zTop) {
     return zTop + Math.sin(dip * Maths.TO_RADIANS) * width / 2.0;
   }
 
   /**
-   * Compute the strike in degrees of the supplied line, or trace, by connecting
-   * the first and last points in {@code locs}. Method forwards to
-   * {@link Locations#azimuth(Location, Location)}.
+   * Compute the strike in decimal degrees of the supplied fault trace by
+   * connecting the endpoints. This approach has been shown to be as accurate as
+   * length-weighted angle averaging and is significantly faster.
    *
-   * <p>This approach has been shown to be as accurate as length-weighted angle
-   * averaging and is significantly faster.
-   *
-   * @param locs line for which to compute strike
-   * @return strike direction in the range [0°, 360°)
+   * @param trace for which to compute strike
+   * @return strike direction in the range [0°..360°)
    * @see #strikeRad(LocationList)
    */
-  public static double strike(LocationList locs) {
-    return strike(locs.first(), locs.last());
+  public static double strike(LocationList trace) {
+    return strike(trace.first(), trace.last());
   }
 
   /**
-   * Compute the strike in degrees of the line connecting {@code p1} to
-   * {@code p2}.
-   * @param p1 starting {@code Location}
-   * @param p2 ending {@code Location}
-   * @return strike direction in the range [0°, 360°)
+   * Compute the strike in decimal degrees of the line connecting the supplied
+   * locations.
+   * 
+   * @param start location
+   * @param end location
+   * @return strike direction in the range [0°..360°)
    * @see #strikeRad(Location, Location)
    */
-  public static double strike(Location p1, Location p2) {
-    return azimuth(p1, p2);
+  public static double strike(Location start, Location end) {
+    return Locations.azimuth(start, end);
   }
 
   /**
-   * Compute the strike in radians of the supplied line, or trace, by connecting
-   * the first and last points in {@code locs}. Method forwards to
-   * {@link Locations#azimuth(Location, Location)}.
+   * Compute the strike in radians of the supplied fault trace by connecting the
+   * endpoints. This approach has been shown to be as accurate as
+   * length-weighted angle averaging and is significantly faster.
    *
-   * <p>This approach has been shown to be as accurate as length-weighted angle
-   * averaging and is significantly faster.
-   *
-   * @param locs line for which to compute strike
-   * @return strike direction in the range [0, 2π)
+   * @param trace for which to compute strike
+   * @return strike direction in the range [0..2π)
    * @see #strike(LocationList)
    */
-  public static double strikeRad(LocationList locs) {
-    return strikeRad(locs.first(), locs.last());
+  public static double strikeRad(LocationList trace) {
+    return strikeRad(trace.first(), trace.last());
   }
 
   /**
-   * Compute the strike in degrees of the line connecting {@code p1} to
-   * {@code p2}.
-   * @param p1 starting {@code Location}
-   * @param p2 ending {@code Location}
-   * @return strike direction in the range [0, 2π)
+   * Compute the strike in radians of the line connecting the supplied
+   * locations.
+   * 
+   * @param start location
+   * @param end location
+   * @return strike direction in the range [0..2π)
    * @see #strike(Location, Location)
    */
-  public static double strikeRad(Location p1, Location p2) {
-    return azimuthRad(p1, p2);
+  public static double strikeRad(Location start, Location end) {
+    return Locations.azimuthRad(start, end);
   }
 
   /**
-   * Compute the dip direction for the supplied line/trace assuming the
-   * right-hand rule (strike + 90°).
+   * Compute the dip direction in decimal degrees for the supplied fault trace
+   * assuming the right-hand rule (strike + 90°).
    *
-   * @param locs line for which to compute dip direction
-   * @return dip direction in the range 0° and 360°)
+   * @param trace for which to compute dip direction
+   * @return dip direction in the range [0°..360°)
+   * @see #dipDirectionRad(LocationList)
    */
-  public static double dipDirection(LocationList locs) {
-    return dipDirection(strike(locs));
+  public static double dipDirection(LocationList trace) {
+    return dipDirection(strike(trace));
   }
 
-  public static double dipDirectionRad(LocationList locs) {
-    return dipDirectionRad(strikeRad(locs));
+  /**
+   * Compute the dip direction in decimal degrees of the line connecting the supplied
+   * locations assuming the right-hand rule (strike + 90°).
+   * 
+   * @param start location
+   * @param end location
+   * @return dip direction in the range [0°..360°)
+   * @see #dipDirectionRad(Location, Location)
+   */
+  public static double dipDirection(Location start, Location end) {
+    return dipDirection(strike(start, end));
   }
 
-  public static double dipDirection(Location p1, Location p2) {
-    return dipDirection(strike(p1, p2));
+  /**
+   * Compute the dip direction in radians for the supplied fault trace assuming
+   * the right-hand rule (strike + π/2).
+   *
+   * @param trace for which to compute dip direction
+   * @return dip direction in the range [0..2π)
+   * @see #dipDirection(LocationList)
+   */
+  public static double dipDirectionRad(LocationList trace) {
+    return dipDirectionRad(strikeRad(trace));
   }
 
-  public static double dipDirectionRad(Location p1, Location p2) {
-    return dipDirectionRad(strikeRad(p1, p2));
+  /**
+   * Compute the dip direction in radians of the line connecting the supplied
+   * locations assuming the right-hand rule (strike + π/2).
+   * 
+   * @param start location
+   * @param end location
+   * @return dip direction in the range [0..2π)
+   * @see #dipDirection(Location, Location)
+   */
+  public static double dipDirectionRad(Location start, Location end) {
+    return dipDirectionRad(strikeRad(start, end));
   }
 
+  /**
+   * Compute the dip direction for the supplied strike (strike + 90°).
+   * 
+   * @param strike (in decimal degrees) for which to compute dip direction
+   * @return dip direction in the range [0°..360°)
+   */
   public static double dipDirection(double strike) {
     return (strike + 90.0) % 360.0;
   }
 
-  public static double dipDirectionRad(double strikeRad) {
-    return (strikeRad + Maths.PI_BY_2) % Maths.TWO_PI;
+  /**
+   * Compute the dip direction for the supplied strike (strike + π/2).
+   * 
+   * @param strike (in radians) for which to compute dip direction
+   * @return dip direction in the range [0°..360°)
+   */
+  public static double dipDirectionRad(double strike) {
+    return (strike + Maths.PI_BY_2) % Maths.TWO_PI;
   }
 
 }

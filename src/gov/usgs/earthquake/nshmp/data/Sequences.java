@@ -1,14 +1,9 @@
 package gov.usgs.earthquake.nshmp.data;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static gov.usgs.earthquake.nshmp.data.DoubleData.areMonotonic;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Map;
-
-import com.google.common.primitives.Doubles;
 
 public class Sequences {
 

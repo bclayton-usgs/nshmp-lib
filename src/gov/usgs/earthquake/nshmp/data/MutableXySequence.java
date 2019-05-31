@@ -161,13 +161,16 @@ public interface MutableXySequence extends XySequence {
    */
   MutableXySequence clear();
 
+  @Override
+  MutableXySequence trim();
+
   /**
    * Transforms all y-values in place using the supplied {@link Function}.
    *
    * @param function for transform
    * @return {@code this} sequence, for use inline
    */
-  default XySequence transform(Function<Double, Double> function) {
+  default MutableXySequence transform(Function<Double, Double> function) {
     throw new UnsupportedOperationException();
   }
 

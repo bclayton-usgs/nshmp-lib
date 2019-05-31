@@ -1,9 +1,5 @@
 package gov.usgs.earthquake.nshmp.data;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 public class InterpolatorTests {
 
   /*

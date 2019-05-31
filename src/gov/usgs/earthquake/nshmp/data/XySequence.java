@@ -2,8 +2,8 @@ package gov.usgs.earthquake.nshmp.data;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
 import com.google.common.primitives.Doubles;
 
@@ -22,7 +22,7 @@ import com.google.common.primitives.Doubles;
  * @author Peter Powers
  * @see MutableXySequence
  */
-public interface XySequence extends Iterable<XyPoint> {
+public interface XySequence {
 
   /**
    * Create a new, immutable sequence from the supplied value arrays.
@@ -92,12 +92,14 @@ public interface XySequence extends Iterable<XyPoint> {
   /**
    * Return an immutable {@code List} of the sequence x-values.
    */
-  List<Double> xValues();
+  DoubleStream xValues();
 
   /**
    * Return an immutable {@code List} of the sequence y-values.
    */
-  List<Double> yValues();
+  DoubleStream yValues();
+
+  Stream<XyPoint> stream();
 
   /**
    * Return the number of points in this sequence.

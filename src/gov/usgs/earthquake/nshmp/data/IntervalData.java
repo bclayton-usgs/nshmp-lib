@@ -9,6 +9,7 @@ import static java.util.Collections.unmodifiableList;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.xml.crypto.Data;
 
@@ -144,7 +145,7 @@ public final class IntervalData {
     public String toString() {
       StringBuilder sb = new StringBuilder();
       appendArrayKeys(sb, "", rows());
-      appendArrayValues(sb, values().yValues());
+      appendArrayValues(sb, values().yValues().boxed().collect(Collectors.toList()));
       return sb.toString();
     }
   }
@@ -274,7 +275,7 @@ public final class IntervalData {
       appendArrayKeys(sb, "          ", columns());
       for (int i = 0; i < rows.size(); i++) {
         sb.append(String.format(KEY_WITH_BRACKETS, rows.get(i)));
-        appendArrayValues(sb, row(i).yValues());
+        appendArrayValues(sb, row(i).yValues().boxed().collect(Collectors.toList()));
       }
       return sb.toString();
     }
@@ -444,7 +445,7 @@ public final class IntervalData {
         for (int j = 0; j < columns.size(); j++) {
           sb.append(String.format(KEY_WITH_BRACKETS, rows.get(i)));
           sb.append(String.format(KEY_WITH_BRACKETS, columns.get(j)));
-          appendArrayValues(sb, column(i, j).yValues());
+          appendArrayValues(sb, column(i, j).yValues().boxed().collect(Collectors.toList()));
         }
       }
       return sb.toString();

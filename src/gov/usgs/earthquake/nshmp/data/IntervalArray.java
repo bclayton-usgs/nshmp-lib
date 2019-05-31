@@ -342,9 +342,7 @@ public interface IntervalArray {
      * @param sequence to add
      */
     public Builder addEach(XySequence sequence) {
-      for (XyPoint xy : sequence) {
-        add(xy.x(), xy.y());
-      }
+      sequence.stream().forEach(xy -> add(xy.x(), xy.y()));
       return this;
     }
 

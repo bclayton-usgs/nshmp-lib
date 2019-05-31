@@ -5,11 +5,10 @@ import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkState;
 import static gov.usgs.earthquake.nshmp.Text.NEWLINE;
 
-import java.util.AbstractList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.RandomAccess;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import com.google.common.base.Joiner;
 
@@ -83,7 +82,7 @@ class ArrayXySequence implements XySequence {
   }
 
   @Override
-  public final XySequence trim() {
+  public XySequence trim() {
     checkState(!this.isClear(), "XySequence.trim() not permitted for 'clear' sequences");
     int minIndex = DoubleData.firstNonZeroIndex(ys);
     int maxIndex = DoubleData.lastNonZeroIndex(ys) + 1;
@@ -114,20 +113,20 @@ class ArrayXySequence implements XySequence {
   }
 
   @Override
-  public List<Double> xValues() {
-    return new XList();
+  public DoubleStream xValues() {
+    return Arrays.stream(xs);
   }
 
   @Override
-  public List<Double> yValues() {
-    return new YList();
+  public DoubleStream yValues() {
+    return Arrays.stream(ys);
   }
 
   @Override
-  public Iterator<XyPoint> iterator() {
-    return new XyIterator();
+  public Stream<XyPoint> stream() {
+    return IntStream.range(0, size()).mapToObj(Point::new);
   }
-  
+
   /*
    * Check the x-value object references; if mismatched, compare values.
    */
@@ -142,103 +141,8 @@ class ArrayXySequence implements XySequence {
     return new StringBuilder(getClass().getSimpleName())
         .append(":")
         .append(NEWLINE)
-        .append(Joiner.on(NEWLINE).join(this))
+        .append(Joiner.on(NEWLINE).join(stream().iterator()))
         .toString();
-  }
-
-  @Deprecated
-  class XyIterator implements Iterator<XyPoint> {
-    private final int size = size();
-    private int caret = 0;
-
-    @Override
-    public boolean hasNext() {
-      return caret < size;
-    }
-
-    @Override
-    public XyPoint next() {
-      return new Point(caret++);
-    }
-
-    @Override
-    public void remove() {
-      throw new UnsupportedOperationException();
-    }
-  }
-
-  @Deprecated
-  final class XList extends AbstractList<Double> implements RandomAccess {
-
-    @Override
-    public Double get(int index) {
-      return x(index);
-    }
-
-    @Override
-    public int size() {
-      return ArrayXySequence.this.size();
-    }
-
-    @Override
-    public Iterator<Double> iterator() {
-      return new Iterator<Double>() {
-        private final int size = size();
-        private int caret = 0;
-
-        @Override
-        public boolean hasNext() {
-          return caret < size;
-        }
-
-        @Override
-        public Double next() {
-          return xUnchecked(caret++);
-        }
-
-        @Override
-        public void remove() {
-          throw new UnsupportedOperationException();
-        }
-      };
-    }
-  }
-
-  @Deprecated
-  final class YList extends AbstractList<Double> implements RandomAccess {
-
-    @Override
-    public Double get(int index) {
-      return y(index);
-    }
-
-    @Override
-    public int size() {
-      return ArrayXySequence.this.size();
-    }
-
-    @Override
-    public Iterator<Double> iterator() {
-      return new Iterator<Double>() {
-        private int caret = 0;
-        private final int size = size();
-
-        @Override
-        public boolean hasNext() {
-          return caret < size;
-        }
-
-        @Override
-        public Double next() {
-          return yUnchecked(caret++);
-        }
-
-        @Override
-        public void remove() {
-          throw new UnsupportedOperationException();
-        }
-      };
-    }
   }
 
   class Point implements XyPoint {

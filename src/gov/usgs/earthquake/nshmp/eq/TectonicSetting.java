@@ -1,6 +1,6 @@
 package gov.usgs.earthquake.nshmp.eq;
 
-import gov.usgs.earthquake.nshmp.Parsing;
+import gov.usgs.earthquake.nshmp.Text;
 
 /**
  * Tectonic setting identifier.
@@ -25,7 +25,7 @@ public enum TectonicSetting {
 
   @Override
   public String toString() {
-    return Parsing.enumLabelWithSpaces(this, true);
+    return Text.enumLabelWithSpaces(this, true);
   }
 
 }

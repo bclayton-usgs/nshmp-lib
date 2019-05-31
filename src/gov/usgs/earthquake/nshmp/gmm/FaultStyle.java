@@ -1,6 +1,6 @@
 package gov.usgs.earthquake.nshmp.gmm;
 
-import gov.usgs.earthquake.nshmp.Parsing;
+import gov.usgs.earthquake.nshmp.Text;
 
 /**
  * Style-of-faulting identifier.
@@ -27,7 +27,7 @@ public enum FaultStyle {
 
   @Override
   public String toString() {
-    return Parsing.enumLabelWithDashes(this, true);
+    return Text.enumLabelWithDashes(this, true);
   }
 
 }

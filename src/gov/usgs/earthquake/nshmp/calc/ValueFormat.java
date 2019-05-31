@@ -1,6 +1,6 @@
 package gov.usgs.earthquake.nshmp.calc;
 
-import gov.usgs.earthquake.nshmp.Parsing;
+import gov.usgs.earthquake.nshmp.Text;
 
 /**
  * Hazard curve value types.
@@ -17,6 +17,6 @@ public enum ValueFormat {
 
   @Override
   public String toString() {
-    return Parsing.enumLabelWithSpaces(this, true);
+    return Text.enumLabelWithSpaces(this, true);
   }
 }

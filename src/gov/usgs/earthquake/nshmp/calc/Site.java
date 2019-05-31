@@ -137,15 +137,13 @@ public class Site implements Named {
    */
   public final double z2p5;
 
-  private Site(String name, Location location, double vs30, boolean vsInferred, double z1p0,
-      double z2p5) {
-
-    this.name = name;
-    this.location = location;
-    this.vs30 = vs30;
-    this.vsInferred = vsInferred;
-    this.z1p0 = z1p0;
-    this.z2p5 = z2p5;
+  private Site(Builder builder) {
+    name = builder.name;
+    location = builder.location;
+    vs30 = builder.vs30;
+    vsInferred = builder.vsInferred;
+    z1p0 = builder.z1p0;
+    z2p5 = builder.z2p5;
   }
 
   @Override
@@ -350,9 +348,12 @@ public class Site implements Named {
        */
       if (basinDataProvider.isPresent()) {
         BasinTerms bt = getBasinTerms();
-        return new Site(name, location, vs30, vsInferred, bt.z1p0, bt.z2p5);
+        z1p0 = bt.z1p0;
+        z2p5 = bt.z2p5;
+        return new Site(this);
       }
-      return new Site(name, location, vs30, vsInferred, z1p0, z2p5);
+
+      return new Site(this);
     }
 
     private BasinTerms getBasinTerms() {

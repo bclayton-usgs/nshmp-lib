@@ -441,6 +441,42 @@ public interface IntervalTable {
       return that;
     }
 
+    double[][] data() {
+      return data;
+    }
+
+    double rowMin() {
+      return rowMin;
+    }
+
+    double rowMax() {
+      return rowMax;
+    }
+
+    double rowΔ() {
+      return rowΔ;
+    }
+
+    double[] rows() {
+      return rows;
+    }
+
+    double columnMin() {
+      return columnMin;
+    }
+
+    double columnMax() {
+      return columnMax;
+    }
+
+    double columnΔ() {
+      return columnΔ;
+    }
+
+    double[] columns() {
+      return columns;
+    }
+
     /*
      * Data is not copied on build() so we dereference data arrays to prevent
      * lingering builders from further modifying data.
@@ -477,10 +513,7 @@ public interface IntervalTable {
     public IntervalTable build() {
       checkState(built != true, "This builder has already been used");
       checkDataState(rows, columns);
-      IntervalTable table = new DefaultTable(
-          rowMin, rowMax, rowΔ, rows,
-          columnMin, columnMax, columnΔ, columns,
-          data);
+      IntervalTable table = new DefaultTable(this);
       dereference();
       return table;
     }

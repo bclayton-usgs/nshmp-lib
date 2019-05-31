@@ -434,6 +434,58 @@ public interface IntervalVolume {
       return that;
     }
 
+    double[][][] data() {
+      return data;
+    }
+
+    double rowMin() {
+      return rowMin;
+    }
+
+    double rowMax() {
+      return rowMax;
+    }
+
+    double rowΔ() {
+      return rowΔ;
+    }
+
+    double[] rows() {
+      return rows;
+    }
+
+    double columnMin() {
+      return columnMin;
+    }
+
+    double columnMax() {
+      return columnMax;
+    }
+
+    double columnΔ() {
+      return columnΔ;
+    }
+
+    double[] columns() {
+      return columns;
+    }
+
+    double levelMin() {
+      return levelMin;
+    }
+
+    double levelMax() {
+      return levelMax;
+    }
+
+    double levelΔ() {
+      return levelΔ;
+    }
+
+    double[] levels() {
+      return levels;
+    }
+
     /*
      * Data is not copied on build() so we dereference data arrays to prevent
      * lingering builders from further modifying data.
@@ -474,11 +526,7 @@ public interface IntervalVolume {
     public IntervalVolume build() {
       checkState(built != true, "This builder has already been used");
       checkDataState(rows, columns, levels);
-      IntervalVolume volume = new DefaultVolume(
-          rowMin, rowMax, rowΔ, rows,
-          columnMin, columnMax, columnΔ, columns,
-          levelMin, levelMax, levelΔ, levels,
-          data);
+      IntervalVolume volume = new DefaultVolume(this);
       dereference();
       return volume;
     }

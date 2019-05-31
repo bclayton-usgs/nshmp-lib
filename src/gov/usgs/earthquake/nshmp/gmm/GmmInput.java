@@ -84,41 +84,51 @@ public class GmmInput {
    * <p>It is generally preferred to use a {@link Builder} to assemble the
    * components of a {@code GmmInput}.
    *
-   * @param Mw moment magnitude of rupture
-   * @param rJB Joyner-Boore distance to rupture (in km)
-   * @param rRup 3D distance to rupture plane (in km)
-   * @param rX distance X (in km)
-   * @param dip of rupture (in degrees)
-   * @param width down-dip rupture width (in km)
-   * @param zTop depth to the top of the rupture (in km)
-   * @param zHyp hypocentral depth (in km)
-   * @param rake of rupture
-   * @param vs30 average shear wave velocity in top 30 m (in m/sec)
-   * @param vsInf whether vs30 is an inferred or measured value
-   * @param z1p0 depth to V<sub>s</sub>=1.0 km/sec (in km)
-   * @param z2p5 depth to V<sub>s</sub>=2.5 km/sec (in km)
+   * <p> Params in builder: <ul><li>Mw moment magnitude of rupture </li>
+   * 
+   * <li>rJB Joyner-Boore distance to rupture (in km)</li>
+   * 
+   * <li>rRup 3D distance to rupture plane (in km))</li>
+   * 
+   * <li>rX distance X (in km))</li>
+   * 
+   * <li>dip of rupture (in degrees))</li>
+   * 
+   * <li>width down-dip rupture width (in km))</li>
+   * 
+   * <li>zTop depth to the top of the rupture (in km))</li>
+   * 
+   * <li>zHyp hypocentral depth (in km))</li>
+   * 
+   * <li>rake of rupture)</li>
+   * 
+   * <li>vs30 average shear wave velocity in top 30 m (in m/sec))</li>
+   * 
+   * <li>vsInf whether vs30 is an inferred or measured value)</li>
+   * 
+   * <li>z1p0 depth to V<sub>s</sub>=1.0 km/sec (in km))</li>
+   * 
+   * <li>z2p5 depth to V<sub>s</sub>=2.5 km/sec (in km))</li></ul>
+   * 
+   * @param builder The GmmInput builder
    */
-  protected GmmInput(
-      double Mw, double rJB, double rRup, double rX,
-      double dip, double width, double zTop, double zHyp, double rake,
-      double vs30, boolean vsInf, double z1p0, double z2p5) {
+  protected GmmInput(Builder builder) {
+    Mw = builder.Mw;
 
-    this.Mw = Mw;
+    rJB = builder.rJB;
+    rRup = builder.rRup;
+    rX = builder.rX;
 
-    this.rJB = rJB;
-    this.rRup = rRup;
-    this.rX = rX;
+    dip = builder.dip;
+    width = builder.width;
+    zTop = builder.zTop;
+    zHyp = builder.zHyp;
+    rake = builder.rake;
 
-    this.dip = dip;
-    this.width = width;
-    this.zTop = zTop;
-    this.zHyp = zHyp;
-    this.rake = rake;
-
-    this.vs30 = vs30;
-    this.vsInf = vsInf;
-    this.z1p0 = z1p0;
-    this.z2p5 = z2p5;
+    vs30 = builder.vs30;
+    vsInf = builder.vsInf;
+    z1p0 = builder.z1p0;
+    z2p5 = builder.z2p5;
   }
 
   /**
@@ -380,10 +390,7 @@ public class GmmInput {
     public GmmInput build() {
       checkState(flags.cardinality() == SIZE, "Not all fields set");
       reset.clear();
-      return new GmmInput(
-          Mw, rJB, rRup, rX,
-          dip, width, zTop, zHyp, rake,
-          vs30, vsInf, z1p0, z2p5);
+      return new GmmInput(this);
     }
 
     /* returns the double value of interest for inlining */
@@ -409,20 +416,21 @@ public class GmmInput {
   private static final String VELOCITY_UNIT = "m/s";
   private static final String ANGLE_UNIT = "°";
 
-  private static final GmmInput DEFAULT = new GmmInput(
-      MW.defaultValue,
-      RJB.defaultValue,
-      RRUP.defaultValue,
-      RX.defaultValue,
-      DIP.defaultValue,
-      WIDTH.defaultValue,
-      ZTOP.defaultValue,
-      ZHYP.defaultValue,
-      RAKE.defaultValue,
-      VS30.defaultValue,
-      VSINF.defaultValue > 0.0,
-      Z1P0.defaultValue,
-      Z2P5.defaultValue);
+  private static final GmmInput DEFAULT = builder()
+      .mag(MW.defaultValue)
+      .rJB(RJB.defaultValue)
+      .rRup(RRUP.defaultValue)
+      .rX(RX.defaultValue)
+      .dip(DIP.defaultValue)
+      .width(WIDTH.defaultValue)
+      .zTop(ZTOP.defaultValue)
+      .zHyp(ZHYP.defaultValue)
+      .rake(RAKE.defaultValue)
+      .vs30(VS30.defaultValue)
+      .vsInf(VSINF.defaultValue > 0.0)
+      .z1p0(Z1P0.defaultValue)
+      .z2p5(Z2P5.defaultValue)
+      .build();
 
   /**
    * {@code GmmInput} field identifiers. These are used internally to manage
@@ -629,37 +637,23 @@ public class GmmInput {
 
     private Optional<Range<Double>> mag;
 
-    private Constraints(
-        Optional<Range<Double>> mag,
-        Optional<Range<Double>> rJB,
-        Optional<Range<Double>> rRup,
-        Optional<Range<Double>> rX,
-        Optional<Range<Double>> dip,
-        Optional<Range<Double>> width,
-        Optional<Range<Double>> zTop,
-        Optional<Range<Double>> zHyp,
-        Optional<Range<Double>> rake,
-        Optional<Range<Double>> vs30,
-        Optional<Range<Boolean>> vsInf,
-        Optional<Range<Double>> z1p0,
-        Optional<Range<Double>> z2p5) {
-
+    private Constraints(Builder builder) {
       constraintMap = new EnumMap<>(Field.class);
 
-      this.mag = mag;
-      constraintMap.put(MW, mag);
-      constraintMap.put(RJB, rJB);
-      constraintMap.put(RRUP, rRup);
-      constraintMap.put(RX, rX);
-      constraintMap.put(DIP, dip);
-      constraintMap.put(WIDTH, width);
-      constraintMap.put(ZTOP, zTop);
-      constraintMap.put(ZHYP, zHyp);
-      constraintMap.put(RAKE, rake);
-      constraintMap.put(VS30, vs30);
-      constraintMap.put(VSINF, vsInf);
-      constraintMap.put(Z1P0, z1p0);
-      constraintMap.put(Z2P5, z2p5);
+      mag = builder.mag;
+      constraintMap.put(MW, builder.mag);
+      constraintMap.put(RJB, builder.rJB);
+      constraintMap.put(RRUP, builder.rRup);
+      constraintMap.put(RX, builder.rX);
+      constraintMap.put(DIP, builder.dip);
+      constraintMap.put(WIDTH, builder.width);
+      constraintMap.put(ZTOP, builder.zTop);
+      constraintMap.put(ZHYP, builder.zHyp);
+      constraintMap.put(RAKE, builder.rake);
+      constraintMap.put(VS30, builder.vs30);
+      constraintMap.put(VSINF, builder.vsInf);
+      constraintMap.put(Z1P0, builder.z1p0);
+      constraintMap.put(Z2P5, builder.z2p5);
     }
 
     public Optional<?> get(Field field) {
@@ -851,12 +845,7 @@ public class GmmInput {
        * Create the {@code Constraints}.
        */
       Constraints build() {
-        return new Constraints(
-            mag,
-            rJB, rRup, rX,
-            dip, width, zTop, zHyp, rake,
-            vs30, vsInf,
-            z1p0, z2p5);
+        return new Constraints(this);
       }
     }
 

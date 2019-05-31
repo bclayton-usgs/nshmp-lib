@@ -367,6 +367,26 @@ public interface IntervalArray {
       return that;
     }
 
+    double[] data() {
+      return data;
+    }
+
+    double rowMin() {
+      return rowMin;
+    }
+
+    double rowMax() {
+      return rowMax;
+    }
+
+    double rowΔ() {
+      return rowΔ;
+    }
+
+    double[] rows() {
+      return rows;
+    }
+
     /*
      * Data is not copied on build() so we dereference data arrays to prevent
      * lingering builders from further modifying data.
@@ -399,9 +419,7 @@ public interface IntervalArray {
     public IntervalArray build() {
       checkState(built != true, "This builder has already been used");
       checkDataState(rows);
-      IntervalArray array = new DefaultArray(
-          rowMin, rowMax, rowΔ, rows,
-          data);
+      IntervalArray array = new DefaultArray(this);
       dereference();
       return array;
     }

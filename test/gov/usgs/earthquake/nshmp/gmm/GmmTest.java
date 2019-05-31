@@ -21,8 +21,8 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import com.google.common.primitives.Doubles;
 
-import gov.usgs.earthquake.nshmp.Parsing;
-import gov.usgs.earthquake.nshmp.Parsing.Delimiter;
+import gov.usgs.earthquake.nshmp.Text;
+import gov.usgs.earthquake.nshmp.Text.Delimiter;
 
 @SuppressWarnings("javadoc")
 public abstract class GmmTest {
@@ -75,7 +75,7 @@ public abstract class GmmTest {
         String id = gmm.name() + "-" + imt.name();
         for (GmmInput input : inputs) {
           ScalarGroundMotion sgm = gmModel.calc(input);
-          String result = Parsing.join(
+          String result = Text.join(
               Lists.newArrayList(modelIndex++ + "-" + id,
                   String.format("%.10f", Math.exp(sgm.mean())),
                   String.format("%.10f", sgm.sigma())),
@@ -100,8 +100,8 @@ public abstract class GmmTest {
     INSTANCE;
     @Override
     public Object[] apply(String line) {
-      Iterator<String> lineIt = Parsing.split(line, Delimiter.COMMA).iterator();
-      Iterator<String> idIt = Parsing.split(lineIt.next(), Delimiter.DASH).iterator();
+      Iterator<String> lineIt = Text.split(line, Delimiter.COMMA).iterator();
+      Iterator<String> idIt = Text.split(lineIt.next(), Delimiter.DASH).iterator();
       return new Object[] {
           Integer.valueOf(idIt.next()), // inputs index
           Gmm.valueOf(idIt.next()), // Gmm
@@ -127,7 +127,7 @@ public abstract class GmmTest {
     public GmmInput apply(String line) {
 
       Iterator<Double> it = FluentIterable
-          .from(Parsing.split(line, Delimiter.COMMA))
+          .from(Text.split(line, Delimiter.COMMA))
           .transform(Doubles.stringConverter())
           .iterator();
 

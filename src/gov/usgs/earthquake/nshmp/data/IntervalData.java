@@ -278,7 +278,7 @@ public final class IntervalData {
 
     final double[][] data;
 
-    public DefaultTable(IntervalTable.Builder builder) {
+    DefaultTable(IntervalTable.Builder builder) {
       super(builder);
       data = builder.data();
     }

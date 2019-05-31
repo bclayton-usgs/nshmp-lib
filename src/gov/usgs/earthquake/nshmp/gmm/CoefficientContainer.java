@@ -19,8 +19,8 @@ import com.google.common.collect.Table;
 import com.google.common.io.Resources;
 import com.google.common.primitives.Doubles;
 
-import gov.usgs.earthquake.nshmp.Parsing;
-import gov.usgs.earthquake.nshmp.Parsing.Delimiter;
+import gov.usgs.earthquake.nshmp.Text;
+import gov.usgs.earthquake.nshmp.Text.Delimiter;
 
 /**
  * Class loads and manages {@code GroundMotionModel} coefficients.
@@ -86,7 +86,7 @@ final class CoefficientContainer {
     List<String> lines = Resources.readLines(url, UTF_8);
     // build coeff name list
     Iterable<String> names = FluentIterable
-        .from(Parsing.split(lines.get(0), Delimiter.COMMA))
+        .from(Text.split(lines.get(0), Delimiter.COMMA))
         .skip(1);
     // build Imt-value map
     Map<Imt, Double[]> valueMap = Maps.newHashMap();
@@ -100,7 +100,7 @@ final class CoefficientContainer {
           }
         }::test);
     for (String line : imtLines) {
-      Iterable<String> entries = Parsing.split(line, Delimiter.COMMA);
+      Iterable<String> entries = Text.split(line, Delimiter.COMMA);
       String imtStr = Iterables.get(entries, 0);
       Imt imt = parseImt(imtStr);
       Iterable<String> valStrs = Iterables.skip(entries, 1);

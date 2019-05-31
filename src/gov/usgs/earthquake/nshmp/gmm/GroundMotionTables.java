@@ -2,8 +2,8 @@ package gov.usgs.earthquake.nshmp.gmm;
 
 import static com.google.common.io.Resources.getResource;
 import static com.google.common.io.Resources.readLines;
-import static gov.usgs.earthquake.nshmp.Parsing.splitToDoubleList;
-import static gov.usgs.earthquake.nshmp.Parsing.splitToList;
+import static gov.usgs.earthquake.nshmp.Text.splitToDoubleList;
+import static gov.usgs.earthquake.nshmp.Text.splitToList;
 import static gov.usgs.earthquake.nshmp.Text.NEWLINE;
 import static gov.usgs.earthquake.nshmp.gmm.Imt.PGA;
 import static gov.usgs.earthquake.nshmp.gmm.Imt.PGV;
@@ -36,8 +36,8 @@ import com.google.common.collect.Maps;
 import com.google.common.io.LineProcessor;
 import com.google.common.primitives.Doubles;
 
-import gov.usgs.earthquake.nshmp.Parsing;
-import gov.usgs.earthquake.nshmp.Parsing.Delimiter;
+import gov.usgs.earthquake.nshmp.Text;
+import gov.usgs.earthquake.nshmp.Text.Delimiter;
 import gov.usgs.earthquake.nshmp.data.DoubleData;
 import gov.usgs.earthquake.nshmp.gmm.GmmUtils.CeusSiteClass;
 import gov.usgs.earthquake.nshmp.gmm.GroundMotionTables.GroundMotionTable.Position;
@@ -638,7 +638,7 @@ final class GroundMotionTables {
 
       if (lineIndex == 2) {
         List<Imt> imtList = FluentIterable
-            .from(Parsing.split(line, Delimiter.SPACE))
+            .from(Text.split(line, Delimiter.SPACE))
             .transform(Doubles.stringConverter())
             .transform(new FrequencyToIMT()::apply)
             .toList();
@@ -655,7 +655,7 @@ final class GroundMotionTables {
         return true;
       }
 
-      List<Double> values = Parsing.splitToDoubleList(line, Delimiter.SPACE);
+      List<Double> values = Text.splitToDoubleList(line, Delimiter.SPACE);
 
       if (values.size() == 1) {
         // reset rIndex for every single mag line encountered

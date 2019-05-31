@@ -312,8 +312,21 @@ public class GmmInputTest {
 	
   @Test
 	public final void gmmInput() {
-		GmmInput gmm = new GmmInput(Mw, rJB, rRup, rX, dip, width,
-				zTop, zHyp, rake, vs30, vsInf, z1p0, z2p5);
+		GmmInput gmm = GmmInput.builder()
+		    .mag(Mw)
+		    .rJB(rJB)
+		    .rRup(rRup)
+		    .rX(rX)
+		    .dip(dip)
+		    .width(width)
+		    .zTop(zTop)
+		    .zHyp(zHyp)
+		    .rake(rake)
+		    .vs30(vs30)
+		    .vsInf(vsInf)
+		    .z1p0(z1p0)
+		    .z2p5(z2p5)
+		    .build();
 		
 		assertEquals("dip not equal-", gmm.dip, dip, 0);
 		assertEquals("Mw not equal-", gmm.Mw, Mw, 0);

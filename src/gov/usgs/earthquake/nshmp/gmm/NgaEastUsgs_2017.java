@@ -27,8 +27,8 @@ import com.google.common.collect.Range;
 import com.google.common.primitives.Doubles;
 
 import gov.usgs.earthquake.nshmp.Maths;
-import gov.usgs.earthquake.nshmp.Parsing;
-import gov.usgs.earthquake.nshmp.Parsing.Delimiter;
+import gov.usgs.earthquake.nshmp.Text;
+import gov.usgs.earthquake.nshmp.Text.Delimiter;
 import gov.usgs.earthquake.nshmp.data.DoubleData;
 import gov.usgs.earthquake.nshmp.data.Interpolator;
 import gov.usgs.earthquake.nshmp.gmm.GmmInput.Constraints;
@@ -157,7 +157,7 @@ public abstract class NgaEastUsgs_2017 implements GroundMotionModel {
           StandardCharsets.UTF_8)
               .stream()
               .skip(1)
-              .map(line -> Parsing.splitToList(line, Delimiter.COMMA))
+              .map(line -> Text.splitToList(line, Delimiter.COMMA))
               .collect(Collectors.toMap(
                   entry -> entry.get(0),
                   entry -> Double.valueOf(entry.get(1))));

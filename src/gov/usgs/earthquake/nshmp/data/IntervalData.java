@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import javax.xml.crypto.Data;
 
-import gov.usgs.earthquake.nshmp.Parsing;
+import gov.usgs.earthquake.nshmp.Text;
 
 /**
  * Static utilities for working with and concrete implementations of 1-, 2- and
@@ -108,15 +108,15 @@ public final class IntervalData {
     final double rowΔ;
     final double[] rows;
 
-    private AbstractArray(double rowMin, double rowMax, double rowΔ, double[] rows) {
-      this.rowMin = rowMin;
-      this.rowMax = rowMax;
-      this.rowΔ = rowΔ;
-      this.rows = rows;
+    private AbstractArray(IntervalArray.Builder builder) {
+      this.rowMin = builder.rowMin();
+      this.rowMax = builder.rowMax();
+      this.rowΔ = builder.rowΔ();
+      this.rows = builder.rows();
     }
 
     @Override
-    public double get(final double rowValue) {
+    public double get(double rowValue) {
       int iRow = indexOf(rowMin, rowΔ, rowValue, rows.length);
       return get(iRow);
     }
@@ -154,16 +154,13 @@ public final class IntervalData {
 
     final double[] data;
 
-    DefaultArray(
-        double rowMin, double rowMax, double rowΔ, double[] rows,
-        double[] data) {
-
-      super(rowMin, rowMax, rowΔ, rows);
-      this.data = data;
+    DefaultArray(IntervalArray.Builder builder) {
+      super(builder);
+      data = builder.data();
     }
 
     @Override
-    public double get(final int rowIndex) {
+    public double get(int rowIndex) {
       return data[rowIndex];
     }
 
@@ -200,23 +197,20 @@ public final class IntervalData {
     final double columnΔ;
     final double[] columns;
 
-    private AbstractTable(
-        double rowMin, double rowMax, double rowΔ, double[] rows,
-        double columnMin, double columnMax, double columnΔ, double[] columns) {
+    private AbstractTable(IntervalTable.Builder builder) {
+      rowMin = builder.rowMin();
+      rowMax = builder.rowMax();
+      rowΔ = builder.rowΔ();
+      rows = builder.rows();
 
-      this.rowMin = rowMin;
-      this.rowMax = rowMax;
-      this.rowΔ = rowΔ;
-      this.rows = rows;
-
-      this.columnMin = columnMin;
-      this.columnMax = columnMax;
-      this.columnΔ = columnΔ;
-      this.columns = columns;
+      columnMin = builder.columnMin();
+      columnMax = builder.columnMax();
+      columnΔ = builder.columnΔ();
+      columns = builder.columns();
     }
 
     @Override
-    public double get(final double rowValue, final double columnValue) {
+    public double get(double rowValue, double columnValue) {
       int iRow = indexOf(rowMin, rowΔ, rowValue, rows.length);
       int iColumn = indexOf(columnMin, columnΔ, columnValue, columns.length);
       return get(iRow, iColumn);
@@ -285,19 +279,18 @@ public final class IntervalData {
 
     final double[][] data;
 
-    DefaultTable(
-        double rowMin, double rowMax, double rowΔ, double[] rows,
-        double columnMin, double columnMax, double columnΔ, double[] columns,
-        double[][] data) {
+    DefaultTable(IntervalTable.Builder builder) {
+      super(builder);
+      data = builder.data();
+    }
 
-      super(
-          rowMin, rowMax, rowΔ, rows,
-          columnMin, columnMax, columnΔ, columns);
+    private DefaultTable(IntervalTable.Builder builder, double[][] data) {
+      super(builder);
       this.data = data;
     }
 
     @Override
-    public double get(final int rowIndex, final int columnIndex) {
+    public double get(int rowIndex, int columnIndex) {
       return data[rowIndex][columnIndex];
     }
 
@@ -308,7 +301,10 @@ public final class IntervalData {
 
     @Override
     public IntervalArray collapse() {
-      return new DefaultArray(rowMin, rowMax, rowΔ, rows, DoubleData.collapse(data));
+      return IntervalArray.Builder
+          .withRows(rowMin, rowMax, rowΔ)
+          .add(DoubleData.collapse(data))
+          .build();
     }
 
     @Override
@@ -339,29 +335,25 @@ public final class IntervalData {
     final double levelΔ;
     final double[] levels;
 
-    private AbstractVolume(
-        double rowMin, double rowMax, double rowΔ, double[] rows,
-        double columnMin, double columnMax, double columnΔ, double[] columns,
-        double levelMin, double levelMax, double levelΔ, double[] levels) {
+    private AbstractVolume(IntervalVolume.Builder builder) {
+      rowMin = builder.rowMin();
+      rowMax = builder.rowMax();
+      rowΔ = builder.rowΔ();
+      rows = builder.rows();
 
-      this.rowMin = rowMin;
-      this.rowMax = rowMax;
-      this.rowΔ = rowΔ;
-      this.rows = rows;
+      columnMin = builder.columnMin();
+      columnMax = builder.columnMax();
+      columnΔ = builder.columnΔ();
+      columns = builder.columns();
 
-      this.columnMin = columnMin;
-      this.columnMax = columnMax;
-      this.columnΔ = columnΔ;
-      this.columns = columns;
-
-      this.levelMin = levelMin;
-      this.levelMax = levelMax;
-      this.levelΔ = levelΔ;
-      this.levels = levels;
+      levelMin = builder.levelMin();
+      levelMax = builder.levelMax();
+      levelΔ = builder.levelΔ();
+      levels = builder.levels();
     }
 
     @Override
-    public double get(final double rowValue, final double columnValue, final double levelValue) {
+    public double get(double rowValue, double columnValue, double levelValue) {
       int iRow = indexOf(rowMin, rowΔ, rowValue, rows.length);
       int iColumn = indexOf(columnMin, columnΔ, columnValue, columns.length);
       int iLevel = indexOf(levelMin, levelΔ, levelValue, levels.length);
@@ -456,21 +448,13 @@ public final class IntervalData {
 
     final double[][][] data;
 
-    DefaultVolume(
-        double rowMin, double rowMax, double rowΔ, double[] rows,
-        double columnMin, double columnMax, double columnΔ, double[] columns,
-        double levelMin, double levelMax, double levelΔ, double[] levels,
-        double[][][] data) {
-
-      super(
-          rowMin, rowMax, rowΔ, rows,
-          columnMin, columnMax, columnΔ, columns,
-          levelMin, levelMax, levelΔ, levels);
-      this.data = data;
+    DefaultVolume(IntervalVolume.Builder builder) {
+      super(builder);
+      data = builder.data();
     }
 
     @Override
-    public double get(final int rowIndex, final int columnIndex, final int levelIndex) {
+    public double get(int rowIndex, int columnIndex, int levelIndex) {
       return data[rowIndex][columnIndex][levelIndex];
     }
 
@@ -481,10 +465,11 @@ public final class IntervalData {
 
     @Override
     public IntervalTable collapse() {
-      return new DefaultTable(
-          rowMin, rowMax, rowΔ, rows,
-          columnMin, columnMax, columnΔ, columns,
-          DoubleData.collapse(data));
+      IntervalTable.Builder builder = new IntervalTable.Builder()
+          .rows(rowMin, rowMax, rowΔ)
+          .columns(columnMin, columnMax, columnΔ);
+
+      return new DefaultTable(builder, DoubleData.collapse(data));
     }
 
     @Override
@@ -502,12 +487,12 @@ public final class IntervalData {
 
   private static void appendArrayKeys(StringBuilder sb, String prefix, Collection<Double> values) {
     sb.append(prefix);
-    sb.append(Parsing.toString(values, KEY_FORMAT, DELIMITER, true, true));
+    sb.append(Text.toString(values, KEY_FORMAT, DELIMITER, true, true));
     sb.append(NEWLINE);
   }
 
   private static void appendArrayValues(StringBuilder sb, Collection<Double> values) {
-    String dataLine = Parsing.toString(values, DATA_FORMAT, DELIMITER, true, true);
+    String dataLine = Text.toString(values, DATA_FORMAT, DELIMITER, true, true);
     dataLine = dataLine.replace("0.0,", "     0.0,");
     dataLine = dataLine.replace("0.0]", "     0.0]");
     sb.append(dataLine);

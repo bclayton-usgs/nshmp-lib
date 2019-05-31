@@ -18,8 +18,8 @@ import java.util.Map;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import gov.usgs.earthquake.nshmp.Parsing;
-import gov.usgs.earthquake.nshmp.Parsing.Delimiter;
+import gov.usgs.earthquake.nshmp.Text;
+import gov.usgs.earthquake.nshmp.Text.Delimiter;
 import gov.usgs.earthquake.nshmp.gmm.GroundMotionTables.GroundMotionTable;
 
 /**
@@ -113,7 +113,7 @@ public final class GmmUtils {
           continue;
         }
 
-        List<String> dVal = Lists.newArrayList(Parsing.split(line, Delimiter.SPACE));
+        List<String> dVal = Lists.newArrayList(Text.split(line, Delimiter.SPACE));
         if (dVal.size() == 0) {
           continue;
         }
@@ -136,14 +136,14 @@ public final class GmmUtils {
       while ((line = br.readLine()) != null) {
         if (line.startsWith("C")) {
           // period map
-          Iterable<String> parts = Parsing.split(line, Delimiter.SPACE);
+          Iterable<String> parts = Text.split(line, Delimiter.SPACE);
           double per = Double.parseDouble(Iterables.get(parts, 4));
           int perKey = (int) (per * 1000);
           periodMap = new HashMap<Integer, Map<Integer, Double>>();
           map.put(perKey, periodMap);
           continue;
         }
-        List<String> values = Lists.newArrayList(Parsing.split(line, Delimiter.SPACE));
+        List<String> values = Lists.newArrayList(Text.split(line, Delimiter.SPACE));
         if (values.size() == 0) {
           continue;
         }

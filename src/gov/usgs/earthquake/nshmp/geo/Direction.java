@@ -1,7 +1,7 @@
 package gov.usgs.earthquake.nshmp.geo;
 
 import gov.usgs.earthquake.nshmp.Maths;
-import gov.usgs.earthquake.nshmp.Parsing;
+import gov.usgs.earthquake.nshmp.Text;
 
 /**
  * Identifiers for basic geographic directions.
@@ -28,7 +28,7 @@ enum Direction {
 
   @Override
   public final String toString() {
-    return Parsing.enumLabelWithSpaces(this, true);
+    return Text.enumLabelWithSpaces(this, true);
   }
 
   /**

@@ -6,7 +6,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Strings.padEnd;
 import static com.google.common.base.Strings.repeat;
-import static gov.usgs.earthquake.nshmp.Parsing.enumsToString;
+import static gov.usgs.earthquake.nshmp.Text.enumsToString;
 import static gov.usgs.earthquake.nshmp.Text.LOG_INDENT;
 import static gov.usgs.earthquake.nshmp.Text.LOG_VALUE_COLUMN;
 import static gov.usgs.earthquake.nshmp.Text.NEWLINE;
@@ -93,24 +93,15 @@ public final class CalcConfig {
   /** Performance and optimization configuration. */
   public final Performance performance;
 
-  private CalcConfig(
-      Optional<Path> resource,
-      Hazard hazard,
-      SiteData siteData,
-      SiteDefaults site,
-      Performance performance,
-      Output output,
-      Deagg deagg,
-      Rate rate) {
-
-    this.resource = resource;
-    this.hazard = hazard;
-    this.siteData = siteData;
-    this.site = site;
-    this.performance = performance;
-    this.output = output;
-    this.deagg = deagg;
-    this.rate = rate;
+  private CalcConfig(Builder builder) {
+    resource = Optional.ofNullable(builder.resource);
+    hazard = builder.hazard.build();
+    siteData = builder.siteData.build();
+    site = builder.site.build();
+    performance = builder.performance.build();
+    output = builder.output.build();
+    deagg = builder.deagg.build();
+    rate = builder.rate.build();
   }
 
   /**
@@ -1462,15 +1453,7 @@ public final class CalcConfig {
      */
     public CalcConfig build() {
       validateState();
-      return new CalcConfig(
-          Optional.ofNullable(resource),
-          hazard.build(),
-          siteData.build(),
-          site.build(),
-          performance.build(),
-          output.build(),
-          deagg.build(),
-          rate.build());
+      return new CalcConfig(this);
     }
   }
 

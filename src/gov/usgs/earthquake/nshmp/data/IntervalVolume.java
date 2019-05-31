@@ -8,10 +8,11 @@ import static gov.usgs.earthquake.nshmp.data.IntervalData.indexOf;
 import static gov.usgs.earthquake.nshmp.data.IntervalData.keys;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import gov.usgs.earthquake.nshmp.data.IntervalData.AbstractVolume;
-import gov.usgs.earthquake.nshmp.data.IntervalData.DefaultVolume;
+import com.google.common.primitives.Doubles;
 
 /**
  * A 3-dimensional volume of immutable, double-valued data that is arranged
@@ -36,7 +37,43 @@ import gov.usgs.earthquake.nshmp.data.IntervalData.DefaultVolume;
  * @see IntervalArray
  * @see IntervalTable
  */
-public interface IntervalVolume {
+public final class IntervalVolume {
+
+  private final double rowMin;
+  private final double rowMax;
+  private final double rowΔ;
+  private final double[] rows;
+
+  private final double columnMin;
+  private final double columnMax;
+  private final double columnΔ;
+  private final double[] columns;
+
+  private final double levelMin;
+  private final double levelMax;
+  private final double levelΔ;
+  private final double[] levels;
+
+  private final double[][][] data;
+
+  private IntervalVolume(Builder builder) {
+    rowMin = builder.rowMin;
+    rowMax = builder.rowMax;
+    rowΔ = builder.rowΔ;
+    rows = builder.rows;
+
+    columnMin = builder.columnMin;
+    columnMax = builder.columnMax;
+    columnΔ = builder.columnΔ;
+    columns = builder.columns;
+
+    levelMin = builder.levelMin;
+    levelMax = builder.levelMax;
+    levelΔ = builder.levelΔ;
+    levels = builder.levels;
+
+    data = builder.data;
+  }
 
   /**
    * Return the value of the bin that maps to the supplied row, column, and
@@ -48,7 +85,12 @@ public interface IntervalVolume {
    * @param levelValue of bin to retrieve
    * @throws IndexOutOfBoundsException if any value is out of range
    */
-  double get(double rowValue, double columnValue, double levelValue);
+  public double get(double rowValue, double columnValue, double levelValue) {
+    int iRow = indexOf(rowMin, rowΔ, rowValue, rows.length);
+    int iColumn = indexOf(columnMin, columnΔ, columnValue, columns.length);
+    int iLevel = indexOf(levelMin, levelΔ, levelValue, levels.length);
+    return get(iRow, iColumn, iLevel);
+  }
 
   /**
    * Return the value of the bin that maps to the supplied row, column, and
@@ -60,7 +102,9 @@ public interface IntervalVolume {
    * @param levelIndex of bin to retrieve
    * @throws IndexOutOfBoundsException if any index is out of range
    */
-  double get(int rowIndex, int columnIndex, int levelIndex);
+  public double get(int rowIndex, int columnIndex, int levelIndex) {
+    return data[rowIndex][columnIndex][levelIndex];
+  }
 
   /**
    * Return an immutable view of the values that map to the supplied row and
@@ -70,7 +114,11 @@ public interface IntervalVolume {
    * @param rowValue of bin to retrieve
    * @param columnValue of bin to retrieve
    */
-  XySequence column(double rowValue, double columnValue);
+  public XySequence column(double rowValue, double columnValue) {
+    int iRow = indexOf(rowMin, rowΔ, rowValue, rows.length);
+    int iColumn = indexOf(columnMin, columnΔ, columnValue, columns.length);
+    return column(iRow, iColumn);
+  }
 
   /**
    * Return an immutable view of the values that map to the supplied row and
@@ -80,85 +128,139 @@ public interface IntervalVolume {
    * @param rowIndex of bin to retrieve
    * @param columnIndex of bin to retrieve
    */
-  XySequence column(int rowIndex, int columnIndex);
+  public XySequence column(int rowIndex, int columnIndex) {
+    return new ArrayXySequence(levels, data[rowIndex][columnIndex]);
+  }
 
   /**
    * Return the lower edge of the lowermost row bin.
    */
-  double rowMin();
+  public double rowMin() {
+    return rowMin;
+  }
 
   /**
    * Return the upper edge of the uppermost row bin.
    */
-  double rowMax();
+  public double rowMax() {
+    return rowMax;
+  }
 
   /**
    * Return the row bin discretization.
    */
-  double rowΔ();
+  public double rowΔ() {
+    return rowΔ;
+  }
 
   /**
    * Return an immutable list <i>view</i> of the row keys (bin centers).
    */
-  List<Double> rows();
+  public List<Double> rows() {
+    return Collections.unmodifiableList(Doubles.asList(rows));
+  }
 
   /**
    * Return the lower edge of the lowermost column bin.
    */
-  double columnMin();
+  public double columnMin() {
+    return columnMin;
+  }
 
   /**
    * Return the upper edge of the uppermost column bin.
    */
-  double columnMax();
+  public double columnMax() {
+    return columnMax;
+  }
 
   /**
    * Return the column bin discretization.
    */
-  double columnΔ();
+  public double columnΔ() {
+    return columnΔ;
+  }
 
   /**
    * Return an immutable list <i>view</i> of the column keys (bin centers).
    */
-  List<Double> columns();
+  public List<Double> columns() {
+    return Collections.unmodifiableList(Doubles.asList(columns));
+  }
 
   /**
    * Return the lower edge of the lowermost level bin.
    */
-  double levelMin();
+  public double levelMin() {
+    return levelMin;
+  }
 
   /**
    * Return the upper edge of the uppermost level bin.
    */
-  double levelMax();
+  public double levelMax() {
+    return levelMax;
+  }
 
   /**
    * Return the level bin discretization.
    */
-  double levelΔ();
+  public double levelΔ() {
+    return levelΔ;
+  }
 
   /**
    * Return an immutable list <i>view</i> of the level keys (bin centers).
    */
-  List<Double> levels();
+  public List<Double> levels() {
+    return Collections.unmodifiableList(Doubles.asList(levels));
+  }
 
   /**
    * Return a new {@code IntervalTable} created by summing the levels of this
    * volume.
    */
-  IntervalTable collapse();
+  public IntervalTable collapse() {
+    return new IntervalTable.Builder()
+        .rows(rowMin, rowMax, rowΔ)
+        .columns(columnMin, columnMax, columnΔ)
+        .data(DoubleData.collapse(data))
+        .build();
+  }
 
   /**
    * Return the indices of the bin with smallest value in the form
    * {@code [rowIndex, columnIndex, levelIndex]}.
    */
-  int[] minIndex();
+  public int[] minIndex() {
+    return Indexing.minIndex(data);
+  }
 
   /**
    * Return the indices of the bin with largest value in the form
    * {@code [rowIndex, columnIndex, levelIndex]}.
    */
-  int[] maxIndex();
+  public int[] maxIndex() {
+    return Indexing.maxIndex(data);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    List<Double> rows = rows();
+    List<Double> columns = columns();
+    IntervalData.appendArrayKeys(sb, "                    ", levels());
+    for (int i = 0; i < rows.size(); i++) {
+      for (int j = 0; j < columns.size(); j++) {
+        sb.append(String.format(IntervalData.KEY_WITH_BRACKETS, rows.get(i)));
+        sb.append(String.format(IntervalData.KEY_WITH_BRACKETS, columns.get(j)));
+        IntervalData.appendArrayValues(
+            sb,
+            column(i, j).yValues().boxed().collect(Collectors.toList()));
+      }
+    }
+    return sb.toString();
+  }
 
   /**
    * A supplier of values with which to fill a {@code IntervalVolume}.
@@ -218,10 +320,8 @@ public interface IntervalVolume {
      * @param volume to copy
      */
     public static Builder copyOf(IntervalVolume volume) {
-      /* Safe covariant cast. */
-      DefaultVolume defaultVolume = (DefaultVolume) volume;
-      Builder builder = copyStructure(defaultVolume);
-      builder.data = DoubleData.copyOf(defaultVolume.data);
+      Builder builder = copyStructure(volume);
+      builder.data = DoubleData.copyOf(volume.data);
       builder.init();
       return builder;
     }
@@ -233,13 +333,12 @@ public interface IntervalVolume {
      * @param model data volume
      */
     public static Builder fromModel(IntervalVolume model) {
-      /* Safe covariant cast. */
-      Builder builder = copyStructure((AbstractVolume) model);
+      Builder builder = copyStructure(model);
       builder.init();
       return builder;
     }
 
-    private static Builder copyStructure(AbstractVolume from) {
+    private static Builder copyStructure(IntervalVolume from) {
       Builder to = new Builder();
       to.rowMin = from.rowMin;
       to.rowMax = from.rowMax;
@@ -404,10 +503,8 @@ public interface IntervalVolume {
      * @see #fromModel(IntervalVolume)
      */
     public Builder add(IntervalVolume volume) {
-      // safe covariant cast
-      validateVolume((AbstractVolume) volume);
-      // safe covariant cast until other concrete implementations exist
-      DoubleData.uncheckedAdd(data, ((DefaultVolume) volume).data);
+      validateVolume(volume);
+      DoubleData.uncheckedAdd(data, volume.data);
       return this;
     }
 
@@ -424,7 +521,7 @@ public interface IntervalVolume {
      * Check hash codes of row, column, and level arrays in case fromModel or
      * copyOf has been used, otherwise check array equality.
      */
-    AbstractVolume validateVolume(AbstractVolume that) {
+    IntervalVolume validateVolume(IntervalVolume that) {
       checkArgument((this.rows.hashCode() == that.rows.hashCode() &&
           this.columns.hashCode() == that.columns.hashCode() &&
           this.levels.hashCode() == that.levels.hashCode()) ||
@@ -432,58 +529,6 @@ public interface IntervalVolume {
               Arrays.equals(this.columns, that.columns) &&
               Arrays.equals(this.levels, that.levels)));
       return that;
-    }
-
-    double[][][] data() {
-      return data;
-    }
-
-    double rowMin() {
-      return rowMin;
-    }
-
-    double rowMax() {
-      return rowMax;
-    }
-
-    double rowΔ() {
-      return rowΔ;
-    }
-
-    double[] rows() {
-      return rows;
-    }
-
-    double columnMin() {
-      return columnMin;
-    }
-
-    double columnMax() {
-      return columnMax;
-    }
-
-    double columnΔ() {
-      return columnΔ;
-    }
-
-    double[] columns() {
-      return columns;
-    }
-
-    double levelMin() {
-      return levelMin;
-    }
-
-    double levelMax() {
-      return levelMax;
-    }
-
-    double levelΔ() {
-      return levelΔ;
-    }
-
-    double[] levels() {
-      return levels;
     }
 
     /*
@@ -526,7 +571,7 @@ public interface IntervalVolume {
     public IntervalVolume build() {
       checkState(built != true, "This builder has already been used");
       checkDataState(rows, columns, levels);
-      IntervalVolume volume = new DefaultVolume(this);
+      IntervalVolume volume = new IntervalVolume(this);
       dereference();
       return volume;
     }

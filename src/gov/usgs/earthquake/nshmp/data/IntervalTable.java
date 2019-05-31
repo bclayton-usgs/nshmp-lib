@@ -9,12 +9,11 @@ import static gov.usgs.earthquake.nshmp.data.IntervalData.indexOf;
 import static gov.usgs.earthquake.nshmp.data.IntervalData.keys;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.common.primitives.Doubles;
-
-import gov.usgs.earthquake.nshmp.data.IntervalData.AbstractTable;
-import gov.usgs.earthquake.nshmp.data.IntervalData.DefaultTable;
 
 /**
  * A 2-dimensional table of immutable, double-valued data that is arranged
@@ -38,7 +37,33 @@ import gov.usgs.earthquake.nshmp.data.IntervalData.DefaultTable;
  * @see IntervalArray
  * @see IntervalVolume
  */
-public interface IntervalTable {
+public final class IntervalTable {
+
+  private final double rowMin;
+  private final double rowMax;
+  private final double rowΔ;
+  private final double[] rows;
+
+  private final double columnMin;
+  private final double columnMax;
+  private final double columnΔ;
+  private final double[] columns;
+
+  private final double[][] data;
+
+  private IntervalTable(Builder builder) {
+    rowMin = builder.rowMin;
+    rowMax = builder.rowMax;
+    rowΔ = builder.rowΔ;
+    rows = builder.rows;
+
+    columnMin = builder.columnMin;
+    columnMax = builder.columnMax;
+    columnΔ = builder.columnΔ;
+    columns = builder.columns;
+
+    data = builder.data;
+  }
 
   /**
    * Return the value of the bin that maps to the supplied row and column
@@ -49,7 +74,11 @@ public interface IntervalTable {
    * @param columnValue of bin to retrieve
    * @throws IndexOutOfBoundsException if either value is out of range
    */
-  double get(double rowValue, double columnValue);
+  public double get(double rowValue, double columnValue) {
+    int iRow = indexOf(rowMin, rowΔ, rowValue, rows.length);
+    int iColumn = indexOf(columnMin, columnΔ, columnValue, columns.length);
+    return get(iRow, iColumn);
+  }
 
   /**
    * Return the value of the bin that maps to the supplied row and column
@@ -60,7 +89,9 @@ public interface IntervalTable {
    * @param columnIndex of bin to retrieve
    * @throws IndexOutOfBoundsException if either index is out of range
    */
-  double get(int rowIndex, int columnIndex);
+  public double get(int rowIndex, int columnIndex) {
+    return data[rowIndex][columnIndex];
+  }
 
   /**
    * Return an immutable view of the values that map to the supplied row value.
@@ -68,7 +99,10 @@ public interface IntervalTable {
    *
    * @param rowValue of bin to retrieve
    */
-  XySequence row(double rowValue);
+  public XySequence row(double rowValue) {
+    int rowIndex = indexOf(rowMin, rowΔ, rowValue, rows.length);
+    return row(rowIndex);
+  }
 
   /**
    * Return an immutable view of the values that map to the supplied row index.
@@ -76,65 +110,104 @@ public interface IntervalTable {
    *
    * @param rowIndex of bin to retrieve
    */
-  XySequence row(int rowIndex);
+  public XySequence row(int rowIndex) {
+    return new ArrayXySequence(columns, data[rowIndex]);
+  }
 
   /**
    * Return the lower edge of the lowermost row bin.
    */
-  double rowMin();
+  public double rowMin() {
+    return rowMin;
+  }
 
   /**
    * Return the upper edge of the uppermost row bin.
    */
-  double rowMax();
+  public double rowMax() {
+    return rowMax;
+  }
 
   /**
    * Return the row bin discretization.
    */
-  double rowΔ();
+  public double rowΔ() {
+    return rowΔ;
+  }
 
   /**
    * Return an immutable list <i>view</i> of the row keys (bin centers).
    */
-  List<Double> rows();
+  public List<Double> rows() {
+    return Collections.unmodifiableList(Doubles.asList(rows));
+  }
 
   /**
    * Return the lower edge of the lowermost column bin.
    */
-  double columnMin();
+  public double columnMin() {
+    return columnMin;
+  }
 
   /**
    * Return the upper edge of the uppermost column bin.
    */
-  double columnMax();
+  public double columnMax() {
+    return columnMax;
+  }
 
   /**
    * Return the column bin discretization.
    */
-  double columnΔ();
+  public double columnΔ() {
+    return columnΔ;
+  }
 
   /**
    * Return an immutable list <i>view</i> of the column keys (bin centers).
    */
-  List<Double> columns();
+  public List<Double> columns() {
+    return Collections.unmodifiableList(Doubles.asList(columns));
+  }
 
   /**
    * Return a new {@code IntervalArray} created by summing the columns of this
    * table.
    */
-  IntervalArray collapse();
+  public IntervalArray collapse() {
+    return IntervalArray.Builder
+        .withRows(rowMin, rowMax, rowΔ)
+        .data(DoubleData.collapse(data))
+        .build();
+  }
 
   /**
    * Return the indices of the bin with smallest value in the form
    * {@code [rowIndex, columnIndex]}.
    */
-  int[] minIndex();
+  public int[] minIndex() {
+    return Indexing.minIndex(data);
+  }
 
   /**
    * Return the indices of the bin with largest value in the form
    * {@code [rowIndex, columnIndex]}.
    */
-  int[] maxIndex();
+  public int[] maxIndex() {
+    return Indexing.maxIndex(data);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    List<Double> rows = rows();
+    IntervalData.appendArrayKeys(sb, "          ", columns());
+    for (int i = 0; i < rows.size(); i++) {
+      sb.append(String.format(IntervalData.KEY_WITH_BRACKETS, rows.get(i)));
+      IntervalData.appendArrayValues(sb, row(i).yValues().boxed().collect(Collectors.toList()));
+    }
+    return sb.toString();
+  }
 
   /**
    * A supplier of values with which to fill a {@code IntervalTable}.
@@ -189,9 +262,8 @@ public interface IntervalTable {
      */
     public static Builder copyOf(IntervalTable table) {
       /* Safe covariant cast. */
-      DefaultTable defaultTable = (DefaultTable) table;
-      Builder builder = copyStructure(defaultTable);
-      builder.data = DoubleData.copyOf(defaultTable.data);
+      Builder builder = copyStructure(table);
+      builder.data = DoubleData.copyOf(table.data);
       builder.init();
       return builder;
     }
@@ -204,12 +276,12 @@ public interface IntervalTable {
      */
     public static Builder fromModel(IntervalTable model) {
       /* Safe covariant cast. */
-      Builder builder = copyStructure((AbstractTable) model);
+      Builder builder = copyStructure(model);
       builder.init();
       return builder;
     }
 
-    private static Builder copyStructure(AbstractTable from) {
+    private static Builder copyStructure(IntervalTable from) {
       Builder to = new Builder();
       to.rowMin = from.rowMin;
       to.rowMax = from.rowMax;
@@ -413,10 +485,8 @@ public interface IntervalTable {
      * @see #fromModel(IntervalTable)
      */
     public Builder add(IntervalTable table) {
-      // safe covariant cast
-      validateTable((AbstractTable) table);
-      // safe covariant cast until other concrete implementations exist
-      DoubleData.uncheckedAdd(data, ((DefaultTable) table).data);
+      validateTable(table);
+      DoubleData.uncheckedAdd(data, table.data);
       return this;
     }
 
@@ -429,52 +499,25 @@ public interface IntervalTable {
       return this;
     }
 
+    /**
+     * Set the data.
+     * @param data to set
+     */
+    Builder data(double[][] data) {
+      this.data = data;
+      return this;
+    }
+
     /*
      * Check hash codes of row and column arrays in case fromModel or copyOf has
      * been used, otherwise check array equality.
      */
-    AbstractTable validateTable(AbstractTable that) {
+    IntervalTable validateTable(IntervalTable that) {
       checkArgument((this.rows.hashCode() == that.rows.hashCode() &&
           this.columns.hashCode() == that.columns.hashCode()) ||
           (Arrays.equals(this.rows, that.rows) &&
               Arrays.equals(this.columns, that.columns)));
       return that;
-    }
-
-    double[][] data() {
-      return data;
-    }
-
-    double rowMin() {
-      return rowMin;
-    }
-
-    double rowMax() {
-      return rowMax;
-    }
-
-    double rowΔ() {
-      return rowΔ;
-    }
-
-    double[] rows() {
-      return rows;
-    }
-
-    double columnMin() {
-      return columnMin;
-    }
-
-    double columnMax() {
-      return columnMax;
-    }
-
-    double columnΔ() {
-      return columnΔ;
-    }
-
-    double[] columns() {
-      return columns;
     }
 
     /*
@@ -513,7 +556,7 @@ public interface IntervalTable {
     public IntervalTable build() {
       checkState(built != true, "This builder has already been used");
       checkDataState(rows, columns);
-      IntervalTable table = new DefaultTable(this);
+      IntervalTable table = new IntervalTable(this);
       dereference();
       return table;
     }

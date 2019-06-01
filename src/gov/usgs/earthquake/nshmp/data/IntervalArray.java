@@ -9,12 +9,11 @@ import static gov.usgs.earthquake.nshmp.data.IntervalData.indexOf;
 import static gov.usgs.earthquake.nshmp.data.IntervalData.keys;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.common.primitives.Doubles;
-
-import gov.usgs.earthquake.nshmp.data.IntervalData.AbstractArray;
-import gov.usgs.earthquake.nshmp.data.IntervalData.DefaultArray;
 
 /**
  * An array of immutable, double-valued data that is arranged according to
@@ -38,7 +37,21 @@ import gov.usgs.earthquake.nshmp.data.IntervalData.DefaultArray;
  * @see IntervalTable
  * @see IntervalVolume
  */
-public interface IntervalArray {
+public final class IntervalArray {
+
+  private final double rowMin;
+  private final double rowMax;
+  private final double rowΔ;
+  private final double[] rows;
+  private final double[] data;
+
+  private IntervalArray(Builder builder) {
+    rowMin = builder.rowMin;
+    rowMax = builder.rowMax;
+    rowΔ = builder.rowΔ;
+    rows = builder.rows;
+    data = builder.data;
+  }
 
   /**
    * Return the value of the bin that maps to the supplied row value. Do not
@@ -47,7 +60,10 @@ public interface IntervalArray {
    * @param rowValue of bin to retrieve
    * @throws IndexOutOfBoundsException if value is out of range
    */
-  double get(double rowValue);
+  public double get(double rowValue) {
+    int iRow = indexOf(rowMin, rowΔ, rowValue, rows.length);
+    return get(iRow);
+  }
 
   /**
    * Return the value of the bin that maps to the supplied row index. Do not
@@ -56,47 +72,73 @@ public interface IntervalArray {
    * @param rowIndex of bin to retrieve
    * @throws IndexOutOfBoundsException if index is out of range
    */
-  double get(int rowIndex);
+  public double get(int rowIndex) {
+    return data[rowIndex];
+  }
 
   /**
    * Return an immutable view of {@code this} as an {@link XySequence}.
    */
-  XySequence values();
+  public XySequence values() {
+    return new ArrayXySequence(rows, data);
+  }
 
   /**
    * Return the lower edge of the lowermost bin.
    */
-  double rowMin();
+  public double rowMin() {
+    return rowMin;
+  }
 
   /**
    * Return the upper edge of the uppermost bin.
    */
-  double rowMax();
+  public double rowMax() {
+    return rowMax;
+  }
 
   /**
    * Return the row bin discretization.
    */
-  double rowΔ();
+  public double rowΔ() {
+    return rowΔ;
+  }
 
   /**
    * Return an immutable list <i>view</i> of the row keys (bin centers).
    */
-  List<Double> rows();
+  public List<Double> rows() {
+    return Collections.unmodifiableList(Doubles.asList(rows));
+  }
 
   /**
    * Return the sum of the values in this array.
    */
-  double sum();
+  public double sum() {
+    return DoubleData.sum(data);
+  }
 
   /**
    * Return the index of the bin with smallest value.
    */
-  int minIndex();
+  public int minIndex() {
+    return Indexing.minIndex(data);
+  }
 
   /**
    * Return the index of the bin with largest value.
    */
-  int maxIndex();
+  public int maxIndex() {
+    return Indexing.maxIndex(data);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    IntervalData.appendArrayKeys(sb, "", rows());
+    IntervalData.appendArrayValues(sb, values().yValues().boxed().collect(Collectors.toList()));
+    return sb.toString();
+  }
 
   /**
    * A supplier of values with which to fill an {@code IntervalArray}.
@@ -144,11 +186,10 @@ public interface IntervalArray {
      */
     public static Builder copyOf(IntervalArray array) {
       /* Safe covariant cast. */
-      DefaultArray defaultArray = (DefaultArray) array;
-      Builder builder = copyStructure(defaultArray);
+      Builder builder = copyStructure(array);
       builder.data = Arrays.copyOf(
-          defaultArray.data,
-          defaultArray.data.length);
+          array.data,
+          array.data.length);
       builder.init();
       return builder;
     }
@@ -161,12 +202,12 @@ public interface IntervalArray {
      */
     public static Builder fromModel(IntervalArray model) {
       /* Safe covariant cast. */
-      Builder builder = copyStructure((AbstractArray) model);
+      Builder builder = copyStructure(model);
       builder.init();
       return builder;
     }
 
-    private static Builder copyStructure(AbstractArray from) {
+    private static Builder copyStructure(IntervalArray from) {
       Builder to = new Builder();
       to.rowMin = from.rowMin;
       to.rowMax = from.rowMax;
@@ -329,10 +370,8 @@ public interface IntervalArray {
      * @see #fromModel(IntervalArray)
      */
     public Builder add(IntervalArray array) {
-      // safe covariant cast
-      validateArray((AbstractArray) array);
-      // safe covariant cast until other concrete implementations exist
-      DoubleData.uncheckedAdd(data, ((DefaultArray) array).data);
+      validateArray(array);
+      DoubleData.uncheckedAdd(data, (array).data);
       return this;
     }
 
@@ -355,34 +394,23 @@ public interface IntervalArray {
       return this;
     }
 
+    /**
+     * Set the data
+     * @param data to set
+     */
+    Builder data(double[] data) {
+      this.data = data;
+      return this;
+    }
+
     /*
      * Check hash codes of row arrays in case fromModel or copyOf has been used,
      * otherwise check array equality.
      */
-    AbstractArray validateArray(AbstractArray that) {
+    IntervalArray validateArray(IntervalArray that) {
       checkArgument(this.rows.hashCode() == that.rows.hashCode() ||
           Arrays.equals(this.rows, that.rows));
       return that;
-    }
-
-    double[] data() {
-      return data;
-    }
-
-    double rowMin() {
-      return rowMin;
-    }
-
-    double rowMax() {
-      return rowMax;
-    }
-
-    double rowΔ() {
-      return rowΔ;
-    }
-
-    double[] rows() {
-      return rows;
     }
 
     /*
@@ -417,7 +445,7 @@ public interface IntervalArray {
     public IntervalArray build() {
       checkState(built != true, "This builder has already been used");
       checkDataState(rows);
-      IntervalArray array = new DefaultArray(this);
+      IntervalArray array = new IntervalArray(this);
       dereference();
       return array;
     }
